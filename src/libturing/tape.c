@@ -1,11 +1,7 @@
+#include <libturing/tape.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-
-struct node {
-    char symbol;
-    struct node* prev;
-    struct node* next;
-};
 
 struct node* create_tape()
 {
@@ -15,7 +11,7 @@ struct node* create_tape()
     return tape;
 }
 
-struct node* add_tape_head(char symbol, struct node* tape)
+struct node* add_node_head(char symbol, struct node* tape)
 {
     struct node* new_head = calloc(1, sizeof(struct node));
     new_head->prev = NULL;
@@ -25,19 +21,21 @@ struct node* add_tape_head(char symbol, struct node* tape)
     return new_head;
 }
 
-static struct node* get_tail(struct node* tape)
+struct node* get_tail(struct node* tape)
 {
     while (tape->next)
         tape = tape->next;
     return tape;
 }
 
-struct node* add_tape_tail(char symbol, struct node* tape)
+struct node* add_node_tail(char symbol, struct node* tape)
 {
     struct node* new_tail = calloc(1, sizeof(struct node));
     struct node* prev_tail = get_tail(tape);
+    new_tail->symbol = symbol;
     prev_tail->prev->next = new_tail;
     new_tail->prev = prev_tail->prev;
     new_tail->next = prev_tail;
     prev_tail->prev = new_tail;
+    return tape;
 }
