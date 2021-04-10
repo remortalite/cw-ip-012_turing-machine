@@ -1,25 +1,35 @@
 APP_NAME = turing
 LIB_NAME = lib$(APP_NAME)
+TEST_NAME = $(APP_NAME)-test
 
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Werror -g
 LFLAGS = -I src -MP -MMD
+TEST_FLAGS = 
 
 BIN_DIR = bin
 OBJ_DIR = obj
 SRC_DIR = src
+TEST_DIR = test
+THIRDPARTY = thirdparty
 
 APP_PATH = $(BIN_DIR)/$(APP_NAME)
 OBJ_PATH = $(OBJ_DIR)/$(SRC_DIR)
 LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/$(LIB_NAME).a
 
+OBJ_TEST_PATH = $(OBJ_DIR)/$(TEST_DIR)
+TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
+
 APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.c')
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.c=$(OBJ_PATH)/%.o)
 
-LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB-NAME) -name '*.c')
-LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)%.c=$(OBJ_PATH)/%.o)
+LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAME) -name '*.c')
+LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.c=$(OBJ_PATH)/%.o)
 
-DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d)
+TEST_SOURCES = $(shell find $(TEST_DIR) -name '*.c')
+TEST_OBJECTS = $(TEST_SOURCES:$(TEST_DIR)/%.c=$(OBJ_TEST_PATH)/%.o)
+
+DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
 
 -include $(DEPS)
 
@@ -41,8 +51,16 @@ $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/%.o: $(SRC_DIR)/$(LIB_NAME)/%.c
 $(OBJ_PATH)/$(APP_NAME)/%.o: $(SRC_DIR)/$(APP_NAME)/%.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
+test: $(TEST_PATH)
+
+$(TEST_PATH): $(TEST_OBJECTS) $(LIB_PATH)
+	$(CC) $(LFLAGS) $(TESTFLAGS) -I $(THIRDPARTY) $^ -o $@
+
+$(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
+	$(CC) $(LFLAGS) $(TESTFLAGS) -I $(THIRDPARTY) -c $< -o $@
+
 clean:
-	$(RM) $(APP_PATH) $(LIB_PATH)
+	$(RM) $(APP_PATH) $(LIB_PATH) $(TEST_PATH)
 	find $(OBJ_DIR) -name '*.[od]' -exec $(RM) '{}' \;
 	@echo Done!
 
@@ -54,5 +72,3 @@ format: .clang-format
 	@echo Done!
 
 .PHONY: all clean format test
-	
-
