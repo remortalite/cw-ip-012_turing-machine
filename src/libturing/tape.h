@@ -2,9 +2,9 @@
 #define TAPE_H
 
 struct node {
-	char symbol;
-	struct node* prev;
-	struct node* next;
+    char symbol;
+    struct node* prev;
+    struct node* next;
 };
 
 struct node* create_tape();
@@ -15,4 +15,4 @@ struct node* get_tail(struct node*);
 
 struct node* add_node_tail(char, struct node*);
 
-#endif //TAPE_H
+#endif // TAPE_H
