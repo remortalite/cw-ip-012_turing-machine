@@ -3,6 +3,8 @@
 #include <ctest.h>
 #include <stdlib.h>
 
+#define CTEST_SEGFAULT
+
 CTEST(suite_tape, create_tape)
 {
     struct node* tape_res = create_tape();
@@ -72,6 +74,67 @@ CTEST(suite_tape, add_node_tail)
     ASSERT_NULL(tape->next->next->next->next);
 
     free(tape->next->next->next);
+    free(tape->next->next);
+    free(tape->next);
+    free(tape);
+}
+
+CTEST(suite_tape, rm_node_head)
+{
+    struct node* tape = create_tape();
+
+    tape = rm_node_head(tape);
+    ASSERT_NULL(tape->next);
+    ASSERT_NULL(tape->prev);
+
+    tape = add_node_head('a', tape);
+
+    tape = rm_node_head(tape);
+    ASSERT_NULL(tape->next);
+    ASSERT_NULL(tape->prev);
+
+    tape = add_node_head('a', tape);
+    tape = add_node_head('b', tape);
+    tape = add_node_head('c', tape);
+
+    tape = rm_node_head(tape);
+
+    ASSERT_NULL(tape->prev);
+    ASSERT_EQUAL(tape->symbol, 'b');
+    ASSERT_EQUAL(tape->next->symbol, 'a');
+
+    free(tape->next->next->next);
+    free(tape->next->next);
+    free(tape->next);
+    free(tape);
+}
+
+CTEST(suite_tape, rm_node_tail)
+{
+    struct node* tape = create_tape();
+
+    tape = rm_node_tail(tape);
+    ASSERT_NULL(tape->next);
+    ASSERT_NULL(tape->prev);
+
+    tape = add_node_head('a', tape);
+
+    tape = rm_node_head(tape);
+    ASSERT_NULL(tape->next);
+    ASSERT_NULL(tape->prev);
+
+    tape = add_node_head('a', tape);
+    tape = add_node_head('b', tape);
+    tape = add_node_head('c', tape);
+
+    tape = rm_node_head(tape);
+
+    ASSERT_NULL(tape->prev);
+    ASSERT_EQUAL(tape->symbol, 'b');
+    ASSERT_EQUAL(tape->next->symbol, 'a');
+    ASSERT_EQUAL(tape->next->next->prev->symbol, 'a');
+    ASSERT_NULL(tape->next->next->next);
+
     free(tape->next->next);
     free(tape->next);
     free(tape);

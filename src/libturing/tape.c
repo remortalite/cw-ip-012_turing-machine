@@ -39,3 +39,28 @@ struct node* add_node_tail(char symbol, struct node* tape)
     prev_tail->prev = new_tail;
     return tape;
 }
+
+struct node* rm_node_head(struct node* tape)
+{
+    if (tape->next == NULL)
+        return tape;
+    tape = tape->next;
+    free(tape->prev);
+    tape->prev = NULL;
+    return tape;
+}
+
+struct node* rm_node_tail(struct node* tape)
+{
+    if (tape->next == NULL)
+        return tape;
+
+    struct node* tail = get_tail(tape);
+    if (tail->prev->prev == NULL)
+        return tail;
+    struct node* rm_node = tail->prev;
+    tail->prev = tail->prev->prev;
+    tail->prev->next = tail;
+    free(rm_node);
+    return tape;
+}

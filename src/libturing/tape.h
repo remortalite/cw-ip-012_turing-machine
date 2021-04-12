@@ -15,4 +15,8 @@ struct node* get_tail(struct node*);
 
 struct node* add_node_tail(char, struct node*);
 
+struct node* rm_node_head(struct node*);
+
+struct node* rm_node_tail(struct node*);
+
 #endif // TAPE_H
