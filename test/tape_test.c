@@ -10,7 +10,8 @@ CTEST(suite_tape, create_tape)
     Node tape_res = create_tape();
     ASSERT_NULL(tape_res->prev);
     ASSERT_NULL(tape_res->next);
-    free(tape_res);
+
+    free_tape(tape_res);
 }
 
 CTEST(suite_tape, add_tape_head)
@@ -23,7 +24,7 @@ CTEST(suite_tape, add_tape_head)
     ASSERT_NULL(tape->prev);
     ASSERT_NULL(tape->next->next);
 
-    char symbol2 = 'a';
+    char symbol2 = 'b';
     Node tape2 = add_node_head(symbol2, tape);
 
     ASSERT_NULL(tape2->prev);
@@ -33,9 +34,7 @@ CTEST(suite_tape, add_tape_head)
     ASSERT_NOT_NULL(tape2->next->prev);
     ASSERT_NULL(tape2->next->next->next);
 
-    free(tape2);
-    free(tape);
-    free(first_node);
+    free_tape(tape2);
 }
 
 CTEST(suite_tape, get_tail)
@@ -50,10 +49,7 @@ CTEST(suite_tape, get_tail)
     ASSERT_EQUAL(tail->prev->symbol, 'a');
     ASSERT_EQUAL(tail->prev->prev->symbol, 'b');
 
-    free(tape->next->next->next);
-    free(tape->next->next);
-    free(tape->next);
-    free(tape);
+    free_tape(tape);
 }
 
 CTEST(suite_tape, add_node_tail)
@@ -73,10 +69,7 @@ CTEST(suite_tape, add_node_tail)
     ASSERT_EQUAL(tape->next->prev->symbol, 'b');
     ASSERT_NULL(tape->next->next->next->next);
 
-    free(tape->next->next->next);
-    free(tape->next->next);
-    free(tape->next);
-    free(tape);
+    free_tape(tape);
 }
 
 CTEST(suite_tape, rm_node_head)
@@ -103,10 +96,7 @@ CTEST(suite_tape, rm_node_head)
     ASSERT_EQUAL(tape->symbol, 'b');
     ASSERT_EQUAL(tape->next->symbol, 'a');
 
-    free(tape->next->next->next);
-    free(tape->next->next);
-    free(tape->next);
-    free(tape);
+    free_tape(tape);
 }
 
 CTEST(suite_tape, rm_node_tail)
@@ -135,9 +125,7 @@ CTEST(suite_tape, rm_node_tail)
     ASSERT_EQUAL(tape->next->next->prev->symbol, 'a');
     ASSERT_NULL(tape->next->next->next);
 
-    free(tape->next->next);
-    free(tape->next);
-    free(tape);
+    free_tape(tape);
 }
 
 CTEST(suite_tape, is_node_last)
@@ -166,7 +154,5 @@ CTEST(suite_tape, is_node_last)
     result = is_node_last(tape->next);
     ASSERT_EQUAL(result_exp, result);
 
-    free(tape->next->next);
-    free(tape->next);
-    free(tape);
+    free_tape(tape);
 }

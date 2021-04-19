@@ -82,3 +82,13 @@ int is_node_last(Node node)
         return 1;
     return 0;
 }
+
+void free_tape(Node tape)
+{
+    // free all elements in the tape
+    for (Node prev = tape; tape;) {
+        prev = tape;
+        tape = tape->next;
+        free(prev);
+    }
+}
