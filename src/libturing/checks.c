@@ -9,7 +9,7 @@ enum Errors {
     ERR_WRONG_SYMBOL,
 };
 
-void check_allocated(struct node* pnode)
+void check_allocated(Node pnode)
 {
     if (pnode == NULL) {
         fprintf(stderr, "Cannot allocate memory!\n");

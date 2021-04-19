@@ -3,7 +3,7 @@
 
 #include <libturing/tape.h>
 
-void check_allocated(struct node*); // ERR_MEMORY_ALLOCATION
+void check_allocated(Node); // ERR_MEMORY_ALLOCATION
 
 void check_symbol(char); // ERR_WRONG_SYMBOL
 

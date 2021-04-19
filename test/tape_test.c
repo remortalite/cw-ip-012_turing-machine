@@ -7,7 +7,7 @@
 
 CTEST(suite_tape, create_tape)
 {
-    struct node* tape_res = create_tape();
+    Node tape_res = create_tape();
     ASSERT_NULL(tape_res->prev);
     ASSERT_NULL(tape_res->next);
     free(tape_res);
@@ -16,15 +16,15 @@ CTEST(suite_tape, create_tape)
 CTEST(suite_tape, add_tape_head)
 {
     char symbol = 'a';
-    struct node* first_node = create_tape();
-    struct node* tape = add_node_head(symbol, first_node);
+    Node first_node = create_tape();
+    Node tape = add_node_head(symbol, first_node);
 
     ASSERT_EQUAL(tape->symbol, symbol);
     ASSERT_NULL(tape->prev);
     ASSERT_NULL(tape->next->next);
 
     char symbol2 = 'a';
-    struct node* tape2 = add_node_head(symbol2, tape);
+    Node tape2 = add_node_head(symbol2, tape);
 
     ASSERT_NULL(tape2->prev);
     ASSERT_EQUAL(tape2->symbol, symbol2);
@@ -40,12 +40,12 @@ CTEST(suite_tape, add_tape_head)
 
 CTEST(suite_tape, get_tail)
 {
-    struct node* tape = create_tape();
+    Node tape = create_tape();
     tape = add_node_head('a', tape);
     tape = add_node_head('b', tape);
     tape = add_node_head('c', tape);
 
-    struct node* tail = get_tail(tape);
+    Node tail = get_tail(tape);
     ASSERT_NULL(tail->next);
     ASSERT_EQUAL(tail->prev->symbol, 'a');
     ASSERT_EQUAL(tail->prev->prev->symbol, 'b');
@@ -58,7 +58,7 @@ CTEST(suite_tape, get_tail)
 
 CTEST(suite_tape, add_node_tail)
 {
-    struct node* tape = create_tape();
+    Node tape = create_tape();
     tape = add_node_head('a', tape);
     tape = add_node_head('b', tape);
 
@@ -81,7 +81,7 @@ CTEST(suite_tape, add_node_tail)
 
 CTEST(suite_tape, rm_node_head)
 {
-    struct node* tape = create_tape();
+    Node tape = create_tape();
 
     tape = rm_node_head(tape);
     ASSERT_NULL(tape->next);
@@ -111,7 +111,7 @@ CTEST(suite_tape, rm_node_head)
 
 CTEST(suite_tape, rm_node_tail)
 {
-    struct node* tape = create_tape();
+    Node tape = create_tape();
 
     tape = rm_node_tail(tape);
     ASSERT_NULL(tape->next);
