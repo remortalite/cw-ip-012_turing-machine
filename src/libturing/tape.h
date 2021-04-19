@@ -1,22 +1,29 @@
 #ifndef TAPE_H
 #define TAPE_H
 
+typedef struct node* Node;
 struct node {
     char symbol;
     struct node* prev;
     struct node* next;
 };
 
-struct node* create_tape();
+Node create_tape();
 
-struct node* add_node_head(char, struct node*);
+Node add_node_head(char, Node);
 
-struct node* get_tail(struct node*);
+Node get_tail(Node);
 
-struct node* add_node_tail(char, struct node*);
+Node add_node_tail(char, Node);
 
-struct node* rm_node_head(struct node*);
+Node rm_node_head(Node);
 
-struct node* rm_node_tail(struct node*);
+Node rm_node_tail(Node);
+
+int is_node_last(Node);
+
+int is_tape_empty(Node);
+
+void free_tape(Node);
 
 #endif // TAPE_H
