@@ -156,3 +156,26 @@ CTEST(suite_tape, is_node_last)
 
     free_tape(tape);
 }
+
+CTEST(suite_tape, is_tape_empty)
+{
+    int result_exp, result;
+
+    Node tape = create_tape();
+
+    result_exp = 1;
+    result = is_tape_empty(tape);
+    ASSERT_EQUAL(result_exp, result);
+
+    tape = add_node_head('a', tape);
+    result_exp = 0;
+    result = is_tape_empty(tape);
+    ASSERT_EQUAL(result_exp, result);
+
+    tape = rm_node_head(tape);
+    result_exp = 1;
+    result = is_tape_empty(tape);
+    ASSERT_EQUAL(result_exp, result);
+
+    free_tape(tape);
+}

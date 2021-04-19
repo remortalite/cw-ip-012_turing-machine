@@ -92,3 +92,11 @@ void free_tape(Node tape)
         free(prev);
     }
 }
+
+int is_tape_empty(Node tape)
+{
+    // return 1 if tape consist from pseudoelement only
+    if (tape->next == NULL && tape->prev == NULL)
+        return 1;
+    return 0;
+}

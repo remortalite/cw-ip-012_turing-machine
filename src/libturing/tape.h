@@ -22,6 +22,8 @@ Node rm_node_tail(Node);
 
 int is_node_last(Node);
 
+int is_tape_empty(Node);
+
 void free_tape(Node);
 
 #endif // TAPE_H
