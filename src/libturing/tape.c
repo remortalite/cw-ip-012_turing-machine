@@ -31,6 +31,7 @@ Node add_node_head(char symbol, Node tape)
 
 Node get_tail(Node tape)
 {
+    // return pseudoelement from the tail
     while (tape->next)
         tape = tape->next;
     return tape;
@@ -70,4 +71,14 @@ Node rm_node_tail(Node tape)
     tail->prev->next = tail;
     free(rm_node);
     return tape;
+}
+
+int is_node_last(Node node)
+{
+    // returns 1 if node is last 'real' node (doesn't include pseusoelement)
+    if (node->next == NULL)
+        return 0;
+    else if (node->next->next == NULL)
+        return 1;
+    return 0;
 }

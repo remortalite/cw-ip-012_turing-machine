@@ -139,3 +139,34 @@ CTEST(suite_tape, rm_node_tail)
     free(tape->next);
     free(tape);
 }
+
+CTEST(suite_tape, is_node_last)
+{
+    int result_exp, result;
+
+    Node tape = create_tape();
+
+    result_exp = 0;
+    result = is_node_last(tape);
+    ASSERT_EQUAL(result_exp, result);
+
+    tape = add_node_head('a', tape);
+
+    result_exp = 1;
+    result = is_node_last(tape);
+    ASSERT_EQUAL(result_exp, result);
+
+    tape = add_node_head('b', tape);
+
+    result_exp = 0;
+    result = is_node_last(tape);
+    ASSERT_EQUAL(result_exp, result);
+
+    result_exp = 1;
+    result = is_node_last(tape->next);
+    ASSERT_EQUAL(result_exp, result);
+
+    free(tape->next->next);
+    free(tape->next);
+    free(tape);
+}

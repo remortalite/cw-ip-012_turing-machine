@@ -20,4 +20,6 @@ Node rm_node_head(Node);
 
 Node rm_node_tail(Node);
 
+int is_node_last(Node);
+
 #endif // TAPE_H
