@@ -7,152 +7,176 @@
 
 CTEST(suite_tape, create_tape)
 {
-    Node tape_res = create_tape();
-    ASSERT_NULL(tape_res->prev);
-    ASSERT_NULL(tape_res->next);
+    Tape tape = create_tape();
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_EQUAL(0, tape.head->symbol);
+    ASSERT_EQUAL(0, tape.tail->symbol);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_NULL(tape.tail->prev);
 
-    free_tape(tape_res);
+    free_tape(tape);
 }
 
 CTEST(suite_tape, add_tape_head)
 {
     char symbol = 'a';
-    Node first_node = create_tape();
-    Node tape = add_node_head(symbol, first_node);
+    Tape tape = create_tape();
+    tape = add_node_head(symbol, tape);
 
-    ASSERT_EQUAL(tape->symbol, symbol);
-    ASSERT_NULL(tape->prev);
-    ASSERT_NULL(tape->next->next);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_EQUAL(symbol, tape.head->symbol);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.head->next);
 
     char symbol2 = 'b';
-    Node tape2 = add_node_head(symbol2, tape);
+    tape = add_node_head(symbol2, tape);
 
-    ASSERT_NULL(tape2->prev);
-    ASSERT_EQUAL(tape2->symbol, symbol2);
-    ASSERT_EQUAL(tape2->next->symbol, symbol);
-    ASSERT_NOT_NULL(tape2->next);
-    ASSERT_NOT_NULL(tape2->next->prev);
-    ASSERT_NULL(tape2->next->next->next);
-
-    free_tape(tape2);
-}
-
-CTEST(suite_tape, get_tail)
-{
-    Node tape = create_tape();
-    tape = add_node_head('a', tape);
-    tape = add_node_head('b', tape);
-    tape = add_node_head('c', tape);
-
-    Node tail = get_tail(tape);
-    ASSERT_NULL(tail->next);
-    ASSERT_EQUAL(tail->prev->symbol, 'a');
-    ASSERT_EQUAL(tail->prev->prev->symbol, 'b');
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_NOT_NULL(tape.head->next);
+    ASSERT_NOT_NULL(tape.tail->prev);
+    ASSERT_NULL(tape.head->next->next);
+    ASSERT_NULL(tape.tail->prev->prev);
+    ASSERT_EQUAL(symbol2, tape.head->symbol);
+    ASSERT_EQUAL(symbol, tape.head->next->symbol);
+    ASSERT_EQUAL(symbol, tape.tail->symbol);
+    ASSERT_EQUAL(symbol2, tape.tail->prev->symbol);
 
     free_tape(tape);
 }
 
 CTEST(suite_tape, add_node_tail)
 {
-    Node tape = create_tape();
-    tape = add_node_head('a', tape);
-    tape = add_node_head('b', tape);
+    Tape tape = create_tape();
 
-    tape = add_node_tail('d', tape);
+    tape = add_node_tail('a', tape);
 
-    ASSERT_NULL(tape->prev);
-    ASSERT_EQUAL(tape->symbol, 'b');
-    ASSERT_EQUAL(tape->next->symbol, 'a');
-    ASSERT_EQUAL(tape->next->next->symbol, 'd');
-    ASSERT_EQUAL(tape->next->next->next->prev->symbol, 'd');
-    ASSERT_EQUAL(tape->next->next->prev->symbol, 'a');
-    ASSERT_EQUAL(tape->next->prev->symbol, 'b');
-    ASSERT_NULL(tape->next->next->next->next);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_EQUAL('a', tape.head->symbol);
+
+    tape = add_node_tail('b', tape);
+
+    ASSERT_FALSE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_NOT_NULL(tape.head->next);
+    ASSERT_NOT_NULL(tape.tail->prev);
+    ASSERT_EQUAL('a', tape.head->symbol);
+    ASSERT_EQUAL('b', tape.tail->symbol);
+    ASSERT_EQUAL('a', tape.tail->prev->symbol);
+    ASSERT_EQUAL('b', tape.head->next->symbol);
+
+    tape = add_node_tail('c', tape);
+
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_NOT_NULL(tape.head->next);
+    ASSERT_EQUAL('a', tape.head->symbol);
+    ASSERT_EQUAL('b', tape.head->next->symbol);
+    ASSERT_EQUAL('c', tape.head->next->next->symbol);
+    ASSERT_EQUAL('c', tape.tail->symbol);
+    ASSERT_EQUAL('b', tape.tail->prev->symbol);
+    ASSERT_EQUAL('a', tape.tail->prev->prev->symbol);
 
     free_tape(tape);
 }
 
 CTEST(suite_tape, rm_node_head)
 {
-    Node tape = create_tape();
+    Tape tape = create_tape();
 
     tape = rm_node_head(tape);
-    ASSERT_NULL(tape->next);
-    ASSERT_NULL(tape->prev);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_EQUAL(0, tape.head->symbol);
 
     tape = add_node_head('a', tape);
-
     tape = rm_node_head(tape);
-    ASSERT_NULL(tape->next);
-    ASSERT_NULL(tape->prev);
+
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_EQUAL(0, tape.head->symbol);
+
+    free_tape(tape);
+
+    tape = create_tape();
 
     tape = add_node_head('a', tape);
     tape = add_node_head('b', tape);
-    tape = add_node_head('c', tape);
-
     tape = rm_node_head(tape);
 
-    ASSERT_NULL(tape->prev);
-    ASSERT_EQUAL(tape->symbol, 'b');
-    ASSERT_EQUAL(tape->next->symbol, 'a');
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_EQUAL('a', tape.head->symbol);
+
+    tape = add_node_head('b', tape);
+    tape = add_node_head('c', tape);
+    tape = rm_node_head(tape);
+
+    ASSERT_FALSE(tape.head == tape.tail);
+    ASSERT_TRUE(tape.head == tape.tail->prev);
+    ASSERT_TRUE(tape.head->next == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_NOT_NULL(tape.head->next);
+    ASSERT_NOT_NULL(tape.tail->prev);
+    ASSERT_EQUAL('b', tape.head->symbol);
+    ASSERT_EQUAL('a', tape.head->next->symbol);
 
     free_tape(tape);
 }
 
 CTEST(suite_tape, rm_node_tail)
 {
-    Node tape = create_tape();
+    Tape tape = create_tape();
 
     tape = rm_node_tail(tape);
-    ASSERT_NULL(tape->next);
-    ASSERT_NULL(tape->prev);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_EQUAL(0, tape.head->symbol);
 
     tape = add_node_head('a', tape);
+    tape = rm_node_tail(tape);
 
-    tape = rm_node_head(tape);
-    ASSERT_NULL(tape->next);
-    ASSERT_NULL(tape->prev);
-
-    tape = add_node_head('a', tape);
-    tape = add_node_head('b', tape);
-    tape = add_node_head('c', tape);
-
-    tape = rm_node_head(tape);
-
-    ASSERT_NULL(tape->prev);
-    ASSERT_EQUAL(tape->symbol, 'b');
-    ASSERT_EQUAL(tape->next->symbol, 'a');
-    ASSERT_EQUAL(tape->next->next->prev->symbol, 'a');
-    ASSERT_NULL(tape->next->next->next);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_EQUAL(0, tape.head->symbol);
 
     free_tape(tape);
-}
 
-CTEST(suite_tape, is_node_last)
-{
-    int result_exp, result;
-
-    Node tape = create_tape();
-
-    result_exp = 0;
-    result = is_node_last(tape);
-    ASSERT_EQUAL(result_exp, result);
+    tape = create_tape();
 
     tape = add_node_head('a', tape);
-
-    result_exp = 1;
-    result = is_node_last(tape);
-    ASSERT_EQUAL(result_exp, result);
-
     tape = add_node_head('b', tape);
+    tape = rm_node_tail(tape);
 
-    result_exp = 0;
-    result = is_node_last(tape);
-    ASSERT_EQUAL(result_exp, result);
+    ASSERT_TRUE(tape.head == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.head->next);
+    ASSERT_EQUAL('b', tape.head->symbol);
 
-    result_exp = 1;
-    result = is_node_last(tape->next);
-    ASSERT_EQUAL(result_exp, result);
+    tape = add_node_head('a', tape);
+    tape = add_node_head('c', tape);
+    tape = rm_node_tail(tape);
+
+    ASSERT_FALSE(tape.head == tape.tail);
+    ASSERT_TRUE(tape.head == tape.tail->prev);
+    ASSERT_TRUE(tape.head->next == tape.tail);
+    ASSERT_NULL(tape.head->prev);
+    ASSERT_NULL(tape.tail->next);
+    ASSERT_NOT_NULL(tape.head->next);
+    ASSERT_NOT_NULL(tape.tail->prev);
+    ASSERT_EQUAL('c', tape.head->symbol);
+    ASSERT_EQUAL('a', tape.head->next->symbol);
 
     free_tape(tape);
 }
@@ -161,7 +185,7 @@ CTEST(suite_tape, is_tape_empty)
 {
     int result_exp, result;
 
-    Node tape = create_tape();
+    Tape tape = create_tape();
 
     result_exp = 1;
     result = is_tape_empty(tape);

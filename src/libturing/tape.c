@@ -15,88 +15,87 @@ Node create_node(char symbol)
     return new_node;
 }
 
-Node create_tape()
+int is_tape_empty(Tape tape)
 {
-    return create_node(0);
-}
-
-Node add_node_head(char symbol, Node tape)
-{
-    Node new_head = create_node(symbol);
-    new_head->prev = NULL;
-    new_head->next = tape;
-    tape->prev = new_head;
-    return new_head;
-}
-
-Node get_tail(Node tape)
-{
-    // return pseudoelement from the tail
-    while (tape->next)
-        tape = tape->next;
-    return tape;
-}
-
-Node add_node_tail(char symbol, Node tape)
-{
-    Node new_tail = create_node(symbol);
-    Node prev_tail = get_tail(tape);
-    prev_tail->prev->next = new_tail;
-    new_tail->prev = prev_tail->prev;
-    new_tail->next = prev_tail;
-    prev_tail->prev = new_tail;
-    return tape;
-}
-
-Node rm_node_head(Node tape)
-{
-    if (tape->next == NULL)
-        return tape;
-    tape = tape->next;
-    free(tape->prev);
-    tape->prev = NULL;
-    return tape;
-}
-
-Node rm_node_tail(Node tape)
-{
-    if (tape->next == NULL)
-        return tape;
-
-    Node tail = get_tail(tape);
-    if (tail->prev->prev == NULL)
-        return tail;
-    Node rm_node = tail->prev;
-    tail->prev = tail->prev->prev;
-    tail->prev->next = tail;
-    free(rm_node);
-    return tape;
-}
-
-int is_node_last(Node node)
-{
-    // returns 1 if node is last 'real' node (doesn't include pseusoelement)
-    if (node->next == NULL)
-        return 0;
-    else if (node->next->next == NULL)
+    if (tape.head == tape.tail && tape.head->symbol == 0)
         return 1;
     return 0;
 }
 
-void free_tape(Node tape)
+Tape create_tape()
 {
-    // free all elements in the tape
-    for (Node prev = tape; tape;) {
-        prev = tape;
-        tape = tape->next;
+    Tape tape;
+    tape.head = create_node(0);
+    tape.tail = tape.head;
+    return tape;
+}
+
+Tape add_node_head(char symbol, Tape tape)
+{
+    if (is_tape_empty(tape)) {
+        tape.head->symbol = symbol;
+        return tape;
+    }
+    Node new_head = create_node(symbol);
+    tape.head->prev = new_head;
+    new_head->next = tape.head;
+    tape.head = new_head;
+    return tape;
+}
+
+Tape add_node_tail(char symbol, Tape tape)
+{
+    if (is_tape_empty(tape)) {
+        tape.head->symbol = symbol;
+        return tape;
+    }
+    Node new_tail = create_node(symbol);
+    tape.tail->next = new_tail;
+    new_tail->prev = tape.tail;
+    tape.tail = new_tail;
+    return tape;
+}
+
+Tape rm_node_head(Tape tape)
+{
+    if (is_tape_empty(tape)) {
+        return tape;
+    }
+    if (tape.head == tape.tail) {
+        tape.head->symbol = 0;
+        return tape;
+    }
+
+    Node prev_head = tape.head;
+    tape.head = tape.head->next;
+    tape.head->prev = NULL;
+    free(prev_head);
+    return tape;
+}
+
+Tape rm_node_tail(Tape tape)
+{
+    if (is_tape_empty(tape)) {
+        return tape;
+    }
+    if (tape.head == tape.tail) {
+        tape.head->symbol = 0;
+        return tape;
+    }
+
+    Node prev_tail = tape.tail;
+    tape.tail = tape.tail->prev;
+    tape.tail->next = NULL;
+    free(prev_tail);
+    return tape;
+}
+
+void free_tape(Tape tape)
+{
+    Node head = tape.head;
+    for (Node prev = head; head;) {
+        prev = head;
+        head = head->next;
         free(prev);
     }
-}
-
-int is_tape_empty(Node tape)
-{
-    // return 1 if tape consist from pseudoelement only
-    if (tape->next == NULL && tape->prev == NULL)
-        return 1;
-    return 0;
 }

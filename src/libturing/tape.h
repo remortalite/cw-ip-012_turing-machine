@@ -8,22 +8,24 @@ struct node {
     struct node* next;
 };
 
-Node create_tape();
+typedef struct tape Tape;
+struct tape {
+    Node head;
+    Node tail;
+};
 
-Node add_node_head(char, Node);
+Tape create_tape(void);
 
-Node get_tail(Node);
+void free_tape(Tape);
 
-Node add_node_tail(char, Node);
+int is_tape_empty(Tape);
 
-Node rm_node_head(Node);
+Tape add_node_head(char, Tape);
 
-Node rm_node_tail(Node);
+Tape add_node_tail(char, Tape);
 
-int is_node_last(Node);
+Tape rm_node_head(Tape);
 
-int is_tape_empty(Node);
-
-void free_tape(Node);
+Tape rm_node_tail(Tape);
 
 #endif // TAPE_H
