@@ -45,4 +45,6 @@ Program create_program(void);
 
 Program add_state(State, Program);
 
+void free_program(Program);
+
 #endif // PROGRAM_H

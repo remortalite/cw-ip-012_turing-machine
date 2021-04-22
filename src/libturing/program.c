@@ -141,3 +141,50 @@ Program add_state(State st, Program prog)
     }
     return prog;
 }
+
+struct _released_list {
+    Action pnode;
+    struct _released_list* next;
+};
+
+static struct _released_list*
+_add_released_list(Action paction, struct _released_list* list)
+{
+    struct _released_list* new_node = calloc(1, sizeof(struct _released_list));
+    new_node->pnode = paction;
+    new_node->next = list;
+    return new_node;
+}
+
+static int _is_released(Action paction, struct _released_list* list)
+{
+    struct _released_list* prev;
+    for (prev = list; prev->next; prev = prev->next)
+        if (prev->pnode == paction)
+            return 1;
+    return 0;
+}
+
+void free_program(Program prog)
+{
+    int i, j;
+    struct _released_list* list = calloc(1, sizeof(struct _released_list));
+    list->next = NULL;
+    Action paction;
+    for (i = 0; i < prog.length; i++) {
+        for (j = 0; j < prog.states[i]->len_actions; j++) {
+            paction = prog.states[i]->actions[j];
+            if (_is_released(paction, list) == 0) {
+                free(paction);
+                list = _add_released_list(paction, list);
+            }
+        }
+        free(prog.names[i]);
+    }
+    struct _released_list* prev;
+    while (list) {
+        prev = list;
+        list = list->next;
+        free(prev);
+    }
+}

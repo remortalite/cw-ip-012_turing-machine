@@ -72,6 +72,8 @@ CTEST(suite_program, create_program)
     ASSERT_NOT_NULL(prog.states);
     ASSERT_EQUAL(0, prog.length);
     ASSERT_EQUAL(INIT_LEN_PROGRAM, prog.max_length);
+
+    free_program(prog);
 }
 
 CTEST(suite_program, add_state)
@@ -129,4 +131,6 @@ CTEST(suite_program, add_state)
     ASSERT_EQUAL('c', prog.states[1]->actions[2]->symb_old);
     ASSERT_EQUAL(3, prog.states[1]->len_actions);
     ASSERT_EQUAL(2, prog.length);
+
+    free_program(prog);
 }
