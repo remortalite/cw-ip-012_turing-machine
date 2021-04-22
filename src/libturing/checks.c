@@ -9,9 +9,9 @@ enum Errors {
     ERR_WRONG_SYMBOL,
 };
 
-void check_allocated(Node pnode)
+void check_p_allocated(void* pname)
 {
-    if (pnode == NULL) {
+    if (pname == NULL) {
         fprintf(stderr, "Cannot allocate memory!\n");
         exit(ERR_MEMORY_ALLOCATION);
     }

@@ -63,3 +63,13 @@ CTEST(suite_program, add_action)
     free(st->actions[1]);
     free(st);
 }
+
+CTEST(suite_program, create_program)
+{
+    Program prog = create_program();
+
+    ASSERT_NOT_NULL(prog.names);
+    ASSERT_NOT_NULL(prog.states);
+    ASSERT_EQUAL(0, prog.length);
+    ASSERT_EQUAL(INIT_LEN_PROGRAM, prog.max_length);
+}
