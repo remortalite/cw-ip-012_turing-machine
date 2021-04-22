@@ -3,7 +3,7 @@ LIB_NAME = lib$(APP_NAME)
 TEST_NAME = $(APP_NAME)-test
 
 CC = gcc
-CFLAGS = -W -Wall -Wextra -Werror -g
+CFLAGS = -W -Wall -Wextra -Werror
 LFLAGS = -I src -MP -MMD
 TEST_FLAGS = 
 
@@ -34,6 +34,9 @@ DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
 -include $(DEPS)
 
 all: $(APP_PATH)
+
+debug: CFLAGS += -DDEBUG -g
+debug: all
 
 # make bin/turing
 $(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
@@ -71,4 +74,4 @@ format: .clang-format
 	find . -name "*.[ch]" | xargs clang-format -i
 	@echo Done!
 
-.PHONY: all clean format test
+.PHONY: all clean format test debug
