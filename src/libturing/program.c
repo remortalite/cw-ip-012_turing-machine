@@ -9,7 +9,6 @@ State create_state(char* name)
 {
     State state = calloc(1, sizeof(State));
     check_allocated(state);
-    // TODO: check pointer, symbols, len(name)
 
     state->name = calloc(MAX_LEN_STATENAME, sizeof(char));
     check_allocated(state->name);
@@ -31,7 +30,6 @@ create_action(char symb_old, char symb_new, Motion motion, char* next_state)
     Action action = calloc(1, sizeof(Action));
     check_allocated(action);
 
-    // TODO: check pointer, symbols, check len(next_state)
     action->symb_old = symb_old;
     action->symb_new = symb_new;
     action->motion = motion;
@@ -151,6 +149,7 @@ static struct _released_list*
 _add_released_list(Action paction, struct _released_list* list)
 {
     struct _released_list* new_node = calloc(1, sizeof(struct _released_list));
+    check_allocated(new_node);
     new_node->pnode = paction;
     new_node->next = list;
     return new_node;
@@ -169,6 +168,7 @@ void free_program(Program prog)
 {
     int i, j;
     struct _released_list* list = calloc(1, sizeof(struct _released_list));
+    check_allocated(list);
     list->next = NULL;
     Action paction;
     for (i = 0; i < prog.length; i++) {
