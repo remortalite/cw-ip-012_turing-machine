@@ -51,4 +51,7 @@ State get_state(char* name, Program);
 
 Action get_action(char* name, char symb, Program);
 
+Program
+add_command(char* name, char c_old, char c_new, Motion, char* next, Program);
+
 #endif // PROGRAM_H

@@ -216,3 +216,31 @@ CTEST(suite_program, get_action)
 
     free_program(prog);
 }
+
+CTEST(suite_program, add_command)
+{
+    Program prog = create_program();
+
+    prog = add_command("q1", 'a', 'b', MOTION_LEFT, "q2", prog);
+
+    prog = add_command("q1", 'b', 'c', MOTION_RIGHT, "q2", prog);
+
+    prog = add_command("q2", 'a', 'c', MOTION_STAY, "q1", prog);
+
+    State q1 = get_state("q1", prog);
+
+    ASSERT_NOT_NULL(q1);
+    ASSERT_NOT_NULL(q1->actions);
+    ASSERT_EQUAL('a', q1->actions[0]->symb_old);
+    ASSERT_EQUAL('b', q1->actions[1]->symb_old);
+
+    State q2 = get_state("q2", prog);
+    ASSERT_NOT_NULL(q2);
+    ASSERT_NOT_NULL(q2->actions);
+    ASSERT_EQUAL('a', q2->actions[0]->symb_old);
+
+    State q3 = get_state("q3", prog);
+    ASSERT_NULL(q3);
+
+    free_program(prog);
+}

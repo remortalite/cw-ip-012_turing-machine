@@ -211,3 +211,19 @@ Action get_action(char* name, char symb_old, Program prog)
     }
     return NULL;
 }
+
+Program add_command(
+        char* name,
+        char symb_old,
+        char symb_new,
+        Motion motion,
+        char* next,
+        Program prog)
+{
+    prog = add_state(
+            add_action(
+                    create_action(symb_old, symb_new, motion, next),
+                    create_state(name)),
+            prog);
+    return prog;
+}
