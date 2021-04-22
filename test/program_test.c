@@ -134,3 +134,85 @@ CTEST(suite_program, add_state)
 
     free_program(prog);
 }
+
+CTEST(suite_program, get_state)
+{
+    Program prog = create_program();
+
+    State result = get_state("q1", prog);
+
+    ASSERT_NULL(result);
+
+    prog = add_state(
+            add_action(
+                    create_action('a', 'b', MOTION_LEFT, "q2"),
+                    create_state("q1")),
+            prog);
+    prog = add_state(
+            add_action(
+                    create_action('b', 'c', MOTION_LEFT, "q2"),
+                    create_state("q1")),
+            prog);
+    prog = add_state(
+            add_action(
+                    create_action('a', 'c', MOTION_LEFT, "q1"),
+                    create_state("q2")),
+            prog);
+
+    result = get_state("q1", prog);
+
+    ASSERT_NOT_NULL(result);
+    ASSERT_NOT_NULL(result->actions);
+    ASSERT_EQUAL('a', result->actions[0]->symb_old);
+    ASSERT_EQUAL('b', result->actions[1]->symb_old);
+
+    result = get_state("q2", prog);
+    ASSERT_NOT_NULL(result);
+    ASSERT_NOT_NULL(result->actions);
+    ASSERT_EQUAL('a', result->actions[0]->symb_old);
+
+    result = get_state("q3", prog);
+    ASSERT_NULL(result);
+
+    free_program(prog);
+}
+
+CTEST(suite_program, get_action)
+{
+    Program prog = create_program();
+
+    Action result = get_action("q1", 'a', prog);
+
+    ASSERT_NULL(result);
+
+    prog = add_state(
+            add_action(
+                    create_action('a', 'b', MOTION_LEFT, "q2"),
+                    create_state("q1")),
+            prog);
+    prog = add_state(
+            add_action(
+                    create_action('b', 'c', MOTION_LEFT, "q2"),
+                    create_state("q1")),
+            prog);
+    prog = add_state(
+            add_action(
+                    create_action('a', 'c', MOTION_LEFT, "q1"),
+                    create_state("q2")),
+            prog);
+
+    result = get_action("q1", 'a', prog);
+    ASSERT_NOT_NULL(result);
+    ASSERT_EQUAL('a', result->symb_old);
+    ASSERT_EQUAL('b', result->symb_new);
+
+    result = get_action("q1", 'b', prog);
+    ASSERT_NOT_NULL(result);
+    ASSERT_EQUAL('b', result->symb_old);
+    ASSERT_EQUAL('c', result->symb_new);
+
+    result = get_action("q2", 'b', prog);
+    ASSERT_NULL(result);
+
+    free_program(prog);
+}

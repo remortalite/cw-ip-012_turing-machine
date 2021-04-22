@@ -188,3 +188,26 @@ void free_program(Program prog)
         free(prev);
     }
 }
+
+State get_state(char* name, Program prog)
+{
+    int i;
+    for (i = 0; i < prog.length; i++) {
+        if (strcmp(prog.names[i], name) == 0)
+            return prog.states[i];
+    }
+    return NULL;
+}
+
+Action get_action(char* name, char symb_old, Program prog)
+{
+    State state = get_state(name, prog);
+    if (state == NULL)
+        return NULL;
+    int i;
+    for (i = 0; i < state->len_actions; i++) {
+        if (state->actions[i]->symb_old == symb_old)
+            return state->actions[i];
+    }
+    return NULL;
+}

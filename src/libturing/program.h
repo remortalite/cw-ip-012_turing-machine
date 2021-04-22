@@ -47,4 +47,8 @@ Program add_state(State, Program);
 
 void free_program(Program);
 
+State get_state(char* name, Program);
+
+Action get_action(char* name, char symb, Program);
+
 #endif // PROGRAM_H
