@@ -73,3 +73,60 @@ CTEST(suite_program, create_program)
     ASSERT_EQUAL(0, prog.length);
     ASSERT_EQUAL(INIT_LEN_PROGRAM, prog.max_length);
 }
+
+CTEST(suite_program, add_state)
+{
+    Program prog = create_program();
+
+    State s1 = create_state("q1");
+    Action a1 = create_action('a', '*', MOTION_LEFT, "q2");
+    s1 = add_action(a1, s1);
+
+    prog = add_state(s1, prog);
+
+    ASSERT_NOT_NULL(prog.names);
+    ASSERT_NOT_NULL(prog.states);
+    ASSERT_STR("q1", prog.names[0]);
+    ASSERT_EQUAL('a', prog.states[0]->actions[0]->symb_old);
+    ASSERT_EQUAL(1, prog.states[0]->len_actions);
+    ASSERT_EQUAL(1, prog.length);
+
+    prog = add_state(s1, prog);
+
+    ASSERT_EQUAL('a', prog.states[0]->actions[0]->symb_old);
+    ASSERT_EQUAL(1, prog.states[0]->len_actions);
+    ASSERT_EQUAL(1, prog.length);
+
+    Action a2 = create_action('b', '*', MOTION_LEFT, "q2");
+    s1 = add_action(a1, s1);
+    s1 = add_action(a2, s1);
+    prog = add_state(s1, prog);
+    ASSERT_EQUAL('a', prog.states[0]->actions[0]->symb_old);
+    ASSERT_EQUAL(2, prog.states[0]->len_actions);
+    ASSERT_EQUAL(1, prog.length);
+
+    Action a3 = create_action('c', 'a', MOTION_RIGHT, "q1");
+    s1 = add_action(a1, s1);
+    s1 = add_action(a2, s1);
+    s1 = add_action(a3, s1);
+    prog = add_state(s1, prog);
+    ASSERT_EQUAL('a', prog.states[0]->actions[0]->symb_old);
+    ASSERT_EQUAL('b', prog.states[0]->actions[1]->symb_old);
+    ASSERT_EQUAL('c', prog.states[0]->actions[2]->symb_old);
+    ASSERT_EQUAL(3, prog.states[0]->len_actions);
+    ASSERT_EQUAL(1, prog.length);
+
+    State s2 = create_state("q2");
+    s2 = add_action(a1, s2);
+    s2 = add_action(a2, s2);
+    prog = add_state(s2, prog);
+    ASSERT_EQUAL('a', prog.states[1]->actions[0]->symb_old);
+    ASSERT_EQUAL('b', prog.states[1]->actions[1]->symb_old);
+    ASSERT_EQUAL(2, prog.states[1]->len_actions);
+    ASSERT_EQUAL(2, prog.length);
+
+    prog.states[1] = add_action(a3, prog.states[1]);
+    ASSERT_EQUAL('c', prog.states[1]->actions[2]->symb_old);
+    ASSERT_EQUAL(3, prog.states[1]->len_actions);
+    ASSERT_EQUAL(2, prog.length);
+}

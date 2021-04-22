@@ -4,7 +4,6 @@
 #define INIT_LEN_ACTIONS 1
 #define INIT_LEN_PROGRAM 4
 #define MAX_LEN_STATENAME 64
-#define KOEF_ACTIONS_ENLARGE 2
 
 typedef enum Motion {
     MOTION_LEFT,
@@ -43,5 +42,7 @@ Action create_action(char symb_old, char symb_new, Motion motion, char* next);
 State add_action(Action, State);
 
 Program create_program(void);
+
+Program add_state(State, Program);
 
 #endif // PROGRAM_H
