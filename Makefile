@@ -5,7 +5,7 @@ TEST_NAME = $(APP_NAME)-test
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Werror
 LFLAGS = -I src -MP -MMD
-TEST_FLAGS = 
+TESTFLAGS = -g
 
 BIN_DIR = bin
 OBJ_DIR = obj

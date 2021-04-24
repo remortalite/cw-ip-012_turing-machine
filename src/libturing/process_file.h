@@ -5,4 +5,8 @@
 
 char* get_line(FILE*);
 
+char* strip(char*);
+
+char* get_word(char*); // allocate memory for new word
+
 #endif
