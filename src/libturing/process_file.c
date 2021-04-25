@@ -77,7 +77,6 @@ char* get_word(char* line, char** ret)
 
 Program fill_program(FILE* fin, Program prog)
 {
-    char *line, *orig_line;
     char* word;
     char* ret;
 
@@ -92,6 +91,8 @@ Program fill_program(FILE* fin, Program prog)
 
     // process lines
     while (1) {
+        char *line, *orig_line;
+
         line = get_line(fin);
         if (line == NULL)
             break;
@@ -169,6 +170,11 @@ Program fill_program(FILE* fin, Program prog)
 
         prog = add_command(
                 curr_state, symb_old, symb_new, motion, next_state, prog);
+
+        free(line);
+        free(orig_line);
+        free(curr_state);
+        free(next_state);
     }
     return prog;
 }
