@@ -84,26 +84,88 @@ CTEST(suite_process_file, strip)
 CTEST(suite_process_file, get_word)
 {
     char* line = calloc(32, sizeof(char));
+    char* ret;
 
     strcpy(line, "hello\r\n");
-    char* word = get_word(line);
+    char* word = get_word(line, &ret);
     ASSERT_STR("hello", word);
-    free(word);
-
-    strcpy(line, strip("hello world "));
-    word = get_word(line);
-    ASSERT_STR("hello", word);
-    free(word);
-
-    strcpy(line, strip("   hello         "));
-    word = get_word(line);
-    ASSERT_STR("hello", word);
-    free(word);
-
-    strcpy(line, "");
-    word = get_word(line);
+    word = get_word(ret, &ret);
     ASSERT_NULL(word);
     free(word);
 
+    strcpy(line, "hello world ");
+    char* word2 = get_word(line, &ret);
+    ASSERT_STR("hello", word2);
+    word2 = get_word(ret, &ret);
+    ASSERT_STR("world", word2);
+    word2 = get_word(ret, &ret);
+    ASSERT_NULL(word2);
+    free(word2);
+
+    strcpy(line, "   hello         ");
+    char* word3 = get_word(line, &ret);
+    ASSERT_STR("hello", word3);
+    word3 = get_word(ret, &ret);
+    ASSERT_NULL(word3);
+    free(word3);
+
+    strcpy(line, "");
+    char* word4 = get_word(line, &ret);
+    ASSERT_NULL(word4);
+    free(word4);
+
+    strcpy(line, "   hello    world   !  ");
+    char* word5 = get_word(line, &ret);
+    ASSERT_STR("hello", word5);
+    word5 = get_word(ret, &ret);
+    ASSERT_STR("world", word5);
+    word5 = get_word(ret, &ret);
+    ASSERT_STR("!", word5);
+    word5 = get_word(ret, &ret);
+    ASSERT_NULL(word5);
+    free(word5);
+
     free(line);
 }
+/*
+CTEST(suite_process_file, fill_program) {
+        FILE* fin = fopen(PATH_TEST, "r");
+    if (fin == NULL) {
+        fprintf(stderr, "Error! Can't open `%s` ", PATH_TEST);
+        ASSERT_NOT_NULL(fin);
+    }
+        Program prog = create_program();
+
+        prog = fill_program(fin, prog);
+
+    char* line = get_line(fin);
+    ASSERT_STR("   ", line);
+
+    char* line2 = get_line(fin);
+    ASSERT_STR("", line2);
+
+    char* line3 = get_line(fin);
+    ASSERT_STR("q1 a b l q2 ", line3);
+
+    char* line4 = get_line(fin);
+    ASSERT_STR(
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq3 a b r "
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+            "qqqqqqqqqqqqqqqqq4",
+            line4);
+
+    char* line5 = get_line(fin);
+    ASSERT_NULL(line5);
+
+    fclose(fin);
+    free(line);
+    free(line2);
+    free(line3);
+    free(line4);
+    free(line5);
+}*/
