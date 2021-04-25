@@ -1,15 +1,9 @@
 # Интерпретатор языка программирования Машины Тьюринга
 
-Сборка:
+Пересборка и запуск:
 
 ```
-make all
-```
-
-Запуск:
-
-```
-./bin/turing
+make clean && make all && ./bin/turing
 ```
 
 Автоформатирование кода:
@@ -24,5 +18,14 @@ make clean
 
 Запуск тестов:
 ```
-make test && ./bin/turing-test
+make clean && make test && ./bin/turing-test
+```
+
+Для дебага использовать:
+```
+make debug
+```
+и
+```
+make debug test
 ```

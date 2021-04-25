@@ -22,7 +22,7 @@ void check_p_allocated(void* pname)
 
 static int is_symb_correct(char symbol)
 {
-    if (isalnum(symbol) || symbol == '*')
+    if (isalnum(symbol) || symbol == '*' || symbol == '_')
         return 1;
     return 0;
 }

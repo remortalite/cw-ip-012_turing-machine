@@ -227,3 +227,25 @@ Program add_command(
             prog);
     return prog;
 }
+
+void print_program(Program prog)
+{
+    int i, j;
+    Action paction;
+
+    for (i = 0; i < prog.length; i++) {
+        printf("-----------------\n");
+        printf("State: `%s`\n", prog.names[i]);
+        printf("--\n");
+        printf("Actions:\n");
+        for (j = 0; j < prog.states[i]->len_actions; j++) {
+            paction = prog.states[i]->actions[j];
+            printf("\t`%c` : `%c` : `%d` : `%s` \n",
+                   paction->symb_old,
+                   paction->symb_new,
+                   paction->motion,
+                   paction->next_state);
+        }
+        printf("-----------------\n");
+    }
+}

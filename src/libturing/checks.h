@@ -5,7 +5,7 @@
 
 void check_p_allocated(void*); // ERR_MEMORY_ALLOCATION
 
-// check if symbol [a-zA-Z0-9\*] or zero
+// check if symbol [a-zA-Z0-9*_] or zero
 void check_symbol(char); // ERR_WRONG_SYMBOL
 
 // like check_symbol, but without zero

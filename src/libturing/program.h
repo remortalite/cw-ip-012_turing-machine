@@ -54,4 +54,6 @@ Action get_action(char* name, char symb, Program);
 Program
 add_command(char* name, char c_old, char c_new, Motion, char* next, Program);
 
+void print_program(Program);
+
 #endif // PROGRAM_H
