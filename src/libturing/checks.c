@@ -6,30 +6,42 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define AVAIL_SYMBOLS "*_+[]<>:!#-,."
+
 enum Errors {
     ERR_MEMORY_ALLOCATION = 1,
     ERR_WRONG_SYMBOL,
     ERR_STATENAME_LONG,
 };
 
-void check_p_allocated(void* pname)
+void check_p_allocated(void* pname, int line)
 {
     if (pname == NULL) {
-        fprintf(stderr, "Cannot allocate memory!\n");
+        fprintf(stderr, "LINE %d: Cannot allocate memory!\n", line);
         exit(ERR_MEMORY_ALLOCATION);
     }
 }
 
+static int is_symb_in(char symbol, char* available)
+{
+    int i;
+    for (i = 0; i < (int)strlen(available); i++) {
+        if (symbol == available[i])
+            return 1;
+    }
+    return 0;
+}
+
 static int is_symb_correct(char symbol)
 {
-    if (isalnum(symbol) || symbol == '*' || symbol == '_')
+    if (isalnum(symbol) || is_symb_in(symbol, AVAIL_SYMBOLS))
         return 1;
     return 0;
 }
 
 void check_symbol(char symbol)
 {
-    // check if symbol is a letter or a number
+    // check if symbol is correct
     // allow to use 0 as correct symbol for pseudoelement
     if (is_symb_correct(symbol) == 0 && symbol != 0) {
         fprintf(stderr, "Wrong symbol: '%c'(%d)!\n", symbol, (int)symbol);

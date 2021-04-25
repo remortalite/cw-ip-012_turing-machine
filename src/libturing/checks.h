@@ -1,11 +1,11 @@
 #ifndef CHECKS_H
 #define CHECKS_H
 
-#define check_allocated(p) check_p_allocated((void*)p)
+#define check_allocated(p) check_p_allocated((void*)p, __LINE__)
 
-void check_p_allocated(void*); // ERR_MEMORY_ALLOCATION
+void check_p_allocated(void*, int line); // ERR_MEMORY_ALLOCATION
 
-// check if symbol [a-zA-Z0-9*_] or zero
+// check if symbol correct or zero
 void check_symbol(char); // ERR_WRONG_SYMBOL
 
 // like check_symbol, but without zero

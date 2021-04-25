@@ -101,7 +101,7 @@ Program add_state(State st, Program prog)
 {
     if (is_name_exists(st->name, prog) == 0) {
         // realloc
-        if (prog.length < prog.max_length - 1) {
+        if (prog.length >= prog.max_length - 1) {
             int new_length = prog.max_length * 2;
             char** names_temp = realloc(prog.names, new_length * sizeof(char*));
             State* states_temp
