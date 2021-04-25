@@ -74,55 +74,6 @@ char* get_word(char* line, char** ret)
     *ret = line + len;
     return word;
 }
-/*
-static Word* create_list() {
-        Word* words = calloc(1, sizeof(Word));
-        check_allocated(words);
-        words->next = NULL;
-        return words;
-}
-
-static Word* add_word(char* name, Word* words) {
-        Word* new_word = calloc(1, sizeof(Word));
-        check_allocated(new_word);
-        new_word->name = calloc(strlen(name)+1, sizeof(char));
-        check_allocated(new_word->name);
-        strcpy(new_word->name, name);
-        new_word->next = words;
-        return new_word;
-}
-
-static void free_words(Word* words) {
-        Word* prev = words;
-        while (words) {
-                prev = words;
-                words = words->next;
-                free(prev);
-        }
-}
-
-Word* split(char* line) {
-        int i;
-
-                Word* words = create_list();
-                char* new_word;
-                while ((new_word = get_word(line)) != NULL) {
-                        words = add_word(new_word, words);
-                        line = strstr(line, new_word);
-                }
-
-                return words;
-
-                free_words(words);;
-
-        for (i = 0; line[i] != ' ' && line[i] != '\0'; i++) {
-
-        }
-        if (line[0] == '\0')
-                return NULL;
-
-}
-*/
 
 Program fill_program(FILE* fin, Program prog)
 {
@@ -151,6 +102,7 @@ Program fill_program(FILE* fin, Program prog)
 
         orig_line = calloc(strlen(line) + 1, sizeof(char));
         strcpy(orig_line, line);
+
         // get field 1: curr_state
         word = get_word(line, &ret);
         if (word == NULL) {
@@ -169,7 +121,7 @@ Program fill_program(FILE* fin, Program prog)
         if (strlen(word) > 1)
             print_debug_str(fstr_symb, word);
         symb_old = word[0];
-        // TODO: check symbol
+        check_symbol_inp(symb_old);
 
         // get field 3: symb_new
         word = get_word(ret, &ret);
@@ -180,7 +132,7 @@ Program fill_program(FILE* fin, Program prog)
         if (strlen(word) > 1)
             print_debug_str(fstr_symb, word);
         symb_new = word[0];
-        // TODO: check symbol
+        check_symbol_inp(symb_new);
 
         // get field 4: motion
         word = get_word(ret, &ret);
