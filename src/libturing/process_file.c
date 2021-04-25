@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define NFIELDS 5
-
 static int end_of_line(char c)
 {
     int eol;
@@ -124,32 +122,101 @@ Word* split(char* line) {
                 return NULL;
 
 }
-
+*/
 
 Program fill_program(FILE* fin, Program prog)
 {
-    char* line;
-        char* word;
-        char* ret;
-        int nfield;
-        char** fields = calloc(NFIELDS, sizeof(char*));
-    while ((line = get_line(fin)) != NULL) {
-                nfield = 0;
-        while (nfield <= NFIELDS) {
-                        word = get_word(line, &ret);
-                        if (word != NULL) {
-                                fields[nfield++] = word;
-                        }
-                        if (ret == NULL)
-                                break;
-                        line = ret;
-                }
-                if (nfield == 5) {
-                        prog = add_command(fields[0], fields[1][0],
-fields[2][0], MOTION_LEFT, fields[4], prog); } else { fprintf(stderr, "Not
-enough fields in line\n");
-                }
+    char *line, *orig_line;
+    char* word;
+    char* ret;
+
+    char* fstr_parse = "Warning! Can't parse line `%s`\n";
+    char* fstr_symb
+            = "Warning! Length of `symb_old` is more than 1. Use only first "
+              "symbol of `%s`\n";
+
+    char *curr_state, *next_state;
+    char symb_old, symb_new, symb_motion;
+    Motion motion;
+
+    // process lines
+    while (1) {
+        line = get_line(fin);
+        if (line == NULL)
+            break;
+        line = strip(line);
+        // if line is empty or if it's a comment
+        if (line[0] == '\0' || line[0] == ';')
+            continue;
+
+        orig_line = calloc(strlen(line) + 1, sizeof(char));
+        strcpy(orig_line, line);
+        // get field 1: curr_state
+        word = get_word(line, &ret);
+        if (word == NULL) {
+            print_debug_str(fstr_parse, orig_line);
+            continue;
+        }
+        check_statename(word);
+        curr_state = word;
+
+        // get field 2: symb_old
+        word = get_word(ret, &ret);
+        if (word == NULL) {
+            print_debug_str(fstr_parse, orig_line);
+            continue;
+        }
+        if (strlen(word) > 1)
+            print_debug_str(fstr_symb, word);
+        symb_old = word[0];
+        // TODO: check symbol
+
+        // get field 3: symb_new
+        word = get_word(ret, &ret);
+        if (word == NULL) {
+            print_debug_str(fstr_parse, orig_line);
+            continue;
+        }
+        if (strlen(word) > 1)
+            print_debug_str(fstr_symb, word);
+        symb_new = word[0];
+        // TODO: check symbol
+
+        // get field 4: motion
+        word = get_word(ret, &ret);
+        if (word == NULL) {
+            print_debug_str(fstr_parse, orig_line);
+            continue;
+        }
+        if (strlen(word) > 1)
+            print_debug_str(fstr_symb, word);
+        symb_motion = word[0];
+        switch (symb_motion) {
+        case 'l':
+            motion = MOTION_LEFT;
+            break;
+        case 'r':
+            motion = MOTION_RIGHT;
+            break;
+        case '*':
+            motion = MOTION_STAY;
+            break;
+        default:
+            print_debug_str(fstr_parse, orig_line);
+            continue;
+        };
+
+        // get field 5: next_state
+        word = get_word(ret, &ret);
+        if (word == NULL) {
+            print_debug_str(fstr_parse, orig_line);
+            continue;
+        }
+        check_statename(word);
+        next_state = word;
+
+        prog = add_command(
+                curr_state, symb_old, symb_new, motion, next_state, prog);
     }
-        return prog;
+    return prog;
 }
-*/

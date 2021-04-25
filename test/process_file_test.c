@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define PATH_TEST "test/file_test.txt"
+#define PATH_FILL_TEST "test/file_fillprog_test.txt"
 
 CTEST(suite_process_file, get_line)
 {
@@ -127,45 +128,37 @@ CTEST(suite_process_file, get_word)
 
     free(line);
 }
-/*
-CTEST(suite_process_file, fill_program) {
-        FILE* fin = fopen(PATH_TEST, "r");
+
+CTEST(suite_process_file, fill_program)
+{
+    FILE* fin = fopen(PATH_FILL_TEST, "r");
     if (fin == NULL) {
         fprintf(stderr, "Error! Can't open `%s` ", PATH_TEST);
         ASSERT_NOT_NULL(fin);
     }
-        Program prog = create_program();
+    Program prog = create_program();
 
-        prog = fill_program(fin, prog);
+    prog = fill_program(fin, prog);
 
-    char* line = get_line(fin);
-    ASSERT_STR("   ", line);
+    ASSERT_EQUAL(2, prog.length);
 
-    char* line2 = get_line(fin);
-    ASSERT_STR("", line2);
+    ASSERT_STR("q1", prog.names[0]);
+    ASSERT_STR("q1", prog.states[0]->name);
+    ASSERT_EQUAL('a', prog.states[0]->actions[0]->symb_old);
+    ASSERT_EQUAL('b', prog.states[0]->actions[0]->symb_new);
+    ASSERT_EQUAL(MOTION_LEFT, prog.states[0]->actions[0]->motion);
+    ASSERT_STR("q2", prog.states[0]->actions[0]->next_state);
 
-    char* line3 = get_line(fin);
-    ASSERT_STR("q1 a b l q2 ", line3);
-
-    char* line4 = get_line(fin);
     ASSERT_STR(
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq3 a b r "
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-            "qqqqqqqqqqqqqqqqq4",
-            line4);
-
-    char* line5 = get_line(fin);
-    ASSERT_NULL(line5);
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq3",
+            prog.names[1]);
+    ASSERT_EQUAL('a', prog.states[1]->actions[0]->symb_old);
+    ASSERT_EQUAL('b', prog.states[1]->actions[0]->symb_new);
+    ASSERT_EQUAL(MOTION_RIGHT, prog.states[1]->actions[0]->motion);
+    ASSERT_STR(
+            "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq4",
+            prog.states[1]->actions[0]->next_state);
 
     fclose(fin);
-    free(line);
-    free(line2);
-    free(line3);
-    free(line4);
-    free(line5);
-}*/
+    free_program(prog);
+}

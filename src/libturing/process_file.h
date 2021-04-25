@@ -11,6 +11,6 @@ char* strip(char*);
 
 char* get_word(char*, char**); // allocate memory for new word
 
-// Program fill_program(FILE*, Program);
+Program fill_program(FILE*, Program);
 
 #endif
