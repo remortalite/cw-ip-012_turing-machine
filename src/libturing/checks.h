@@ -13,6 +13,6 @@ void check_symbol_inp(char); // ERR_WRONG_SYMBOL
 
 void print_debug_str(char* fstr, char* line); // warning, doesn't raise error
 
-void check_statename(char*); // ERR_STATEMENT_LONG
+void check_statename(char*); // ERR_STATEMENT_LONG or ERR_STATEMENT_CHAR
 
 #endif // CHECKS_H

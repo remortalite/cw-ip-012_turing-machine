@@ -12,6 +12,7 @@ enum Errors {
     ERR_MEMORY_ALLOCATION = 1,
     ERR_WRONG_SYMBOL,
     ERR_STATENAME_LONG,
+    ERR_STATENAME_CHAR,
 };
 
 void check_p_allocated(void* pname, int line)
@@ -66,7 +67,7 @@ void print_debug_str(char* fstr, char* line)
 #endif
 }
 
-void check_statename(char* statename)
+static void check_statename_len(const char* statename)
 {
     if (strlen(statename) >= MAX_LEN_STATENAME) {
         fprintf(stderr,
@@ -77,4 +78,24 @@ void check_statename(char* statename)
                 (int)strlen(statename));
         exit(ERR_STATENAME_LONG);
     }
+}
+
+static void check_statename_char(const char* statename)
+{
+    int i;
+    for (i = 0; i < (int)strlen(statename); i++) {
+        if (isalnum(statename[i]) == 0) {
+            fprintf(stderr,
+                    "Error! Can't use char `%c` in statename `%s`!\n",
+                    statename[i],
+                    statename);
+            exit(ERR_STATENAME_CHAR);
+        }
+    }
+}
+
+void check_statename(const char* statename)
+{
+    check_statename_len(statename);
+    check_statename_char(statename);
 }
