@@ -1,12 +1,10 @@
+#include <libturing/constants.h>
 #include <libturing/program.h>
-#include <libturing/tape.h>
 
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define AVAIL_SYMBOLS "*_+[]<>:!#-,."
 
 enum Errors {
     ERR_MEMORY_ALLOCATION = 1,
