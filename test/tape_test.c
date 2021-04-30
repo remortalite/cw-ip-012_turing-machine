@@ -1,6 +1,8 @@
 #include <libturing/constants.h>
 #include <libturing/tape.h>
 
+#include <libturing/tape.c>
+
 #include <ctest.h>
 #include <stdlib.h>
 

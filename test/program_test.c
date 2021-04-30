@@ -1,5 +1,7 @@
 #include <libturing/program.h>
 
+#include <libturing/program.c>
+
 #include <ctest.h>
 #include <stdlib.h>
 #include <string.h>
