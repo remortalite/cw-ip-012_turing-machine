@@ -14,6 +14,8 @@ struct tape {
     Node tail;
 };
 
+Node create_node(char);
+
 Tape create_tape(void);
 
 void free_tape(Tape);
@@ -27,5 +29,7 @@ Tape add_node_tail(char, Tape);
 Tape rm_node_head(Tape);
 
 Tape rm_node_tail(Tape);
+
+int is_node_empty(Node);
 
 #endif // TAPE_H

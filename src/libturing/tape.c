@@ -99,3 +99,10 @@ void free_tape(Tape tape)
         free(prev);
     }
 }
+
+int is_node_empty(Node node)
+{
+    if (node->symbol == 0)
+        return 1;
+    return 0;
+}

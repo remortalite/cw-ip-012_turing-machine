@@ -203,3 +203,34 @@ CTEST(suite_tape, is_tape_empty)
 
     free_tape(tape);
 }
+
+CTEST(suite_tape, create_node)
+{
+    Node n1 = create_node(0);
+    ASSERT_EQUAL(0, n1->symbol);
+    ASSERT_NULL(n1->prev);
+    ASSERT_NULL(n1->next);
+    free(n1);
+
+    n1 = create_node('a');
+    ASSERT_EQUAL('a', n1->symbol);
+    ASSERT_NULL(n1->prev);
+    ASSERT_NULL(n1->next);
+    free(n1);
+}
+
+CTEST(suite_tape, is_node_empty)
+{
+    int res;
+    Node n1;
+
+    n1 = create_node(0);
+    res = is_node_empty(n1);
+    ASSERT_EQUAL(1, res);
+    free(n1);
+
+    n1 = create_node('a');
+    res = is_node_empty(n1);
+    ASSERT_EQUAL(0, res);
+    free(n1);
+}

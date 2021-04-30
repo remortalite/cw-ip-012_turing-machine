@@ -1,9 +1,7 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#define INIT_LEN_ACTIONS 1
-#define INIT_LEN_PROGRAM 4
-#define MAX_LEN_STATENAME 64
+#include <libturing/constants.h>
 
 typedef enum Motion {
     MOTION_LEFT,
