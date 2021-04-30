@@ -7,9 +7,17 @@
 
 char* get_line(FILE*);
 
-char* strip(char*);
+// strip:
+// change line
+// return pointer to stripped line
+char* strip(char* line);
 
-char* get_word(char*, char**); // allocate memory for new word
+// get_word:
+// strip `line` using strip()
+// allocate memory for new word
+// save in `ret` pointer to next symbol after `word` (rest of the line)
+// return: word or NULL
+char* get_word(char* line, char** ret);
 
 Program fill_program(FILE*, Program);
 
