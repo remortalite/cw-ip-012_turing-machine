@@ -8,7 +8,8 @@
 char* get_line(FILE*);
 
 // strip:
-// change line
+// modify `line` for dropping ' ', '\n' and '\r' at the
+// begginning and at the end of line
 // return pointer to stripped line
 char* strip(char* line);
 
