@@ -47,8 +47,12 @@ Program add_state(State, Program);
 
 void free_program(Program);
 
+// get_state:
+// return State or NULL
 State get_state(char* name, Program);
 
+// get_action:
+// return Action or NULL
 Action get_action(char* name, char symb, Program);
 
 Program
