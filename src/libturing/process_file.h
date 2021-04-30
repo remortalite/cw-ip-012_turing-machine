@@ -7,7 +7,10 @@
 
 char* get_line(FILE*);
 
-char* strip(char*);
+// strip:
+// change line
+// return pointer to stripped line
+char* strip(char* line);
 
 // get_word:
 // strip `line` using strip()
