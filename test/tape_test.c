@@ -234,3 +234,36 @@ CTEST(suite_tape, is_node_empty)
     ASSERT_EQUAL(0, res);
     free(n1);
 }
+
+CTEST(suite_tape, check_length_correct)
+{
+    Tape tape = create_tape();
+
+    ASSERT_EQUAL(0, tape.length);
+
+    tape = rm_node_head(tape);
+
+    ASSERT_EQUAL(0, tape.length);
+
+    tape = add_node_head('a', tape);
+
+    ASSERT_EQUAL(1, tape.length);
+
+    tape = add_node_head('b', tape);
+
+    ASSERT_EQUAL(2, tape.length);
+
+    tape = rm_node_tail(tape);
+
+    ASSERT_EQUAL(1, tape.length);
+
+    tape = rm_node_head(tape);
+
+    ASSERT_EQUAL(0, tape.length);
+
+    tape = rm_node_tail(tape);
+
+    ASSERT_EQUAL(0, tape.length);
+
+    free_tape(tape);
+}
