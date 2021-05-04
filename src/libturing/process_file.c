@@ -122,7 +122,7 @@ Program fill_program(FILE* fin, Program prog)
         if (strlen(word) > 1)
             print_debug_str(fstr_symb, word);
         symb_old = word[0];
-        check_symbol_inp(symb_old);
+        check_symbol(symb_old);
 
         // get field 3: symb_new
         word = get_word(ret, &ret);
@@ -133,7 +133,7 @@ Program fill_program(FILE* fin, Program prog)
         if (strlen(word) > 1)
             print_debug_str(fstr_symb, word);
         symb_new = word[0];
-        check_symbol_inp(symb_new);
+        check_symbol(symb_new);
 
         // get field 4: motion
         word = get_word(ret, &ret);
