@@ -1,3 +1,4 @@
+#include <libturing/constants.h>
 #include <libturing/tape.h>
 
 #include <ctest.h>
@@ -10,8 +11,8 @@ CTEST(suite_tape, create_tape)
     Tape tape = create_tape();
     ASSERT_NULL(tape.head->prev);
     ASSERT_NULL(tape.tail->next);
-    ASSERT_EQUAL(0, tape.head->symbol);
-    ASSERT_EQUAL(0, tape.tail->symbol);
+    ASSERT_EQUAL(SYMB_NULL, tape.head->symbol);
+    ASSERT_EQUAL(SYMB_NULL, tape.tail->symbol);
     ASSERT_TRUE(tape.head == tape.tail);
     ASSERT_NULL(tape.tail->next);
     ASSERT_NULL(tape.tail->prev);
@@ -93,7 +94,7 @@ CTEST(suite_tape, rm_node_head)
     ASSERT_TRUE(tape.head == tape.tail);
     ASSERT_NULL(tape.head->next);
     ASSERT_NULL(tape.head->prev);
-    ASSERT_EQUAL(0, tape.head->symbol);
+    ASSERT_EQUAL(SYMB_NULL, tape.head->symbol);
 
     tape = add_node_head('a', tape);
     tape = rm_node_head(tape);
@@ -101,7 +102,7 @@ CTEST(suite_tape, rm_node_head)
     ASSERT_TRUE(tape.head == tape.tail);
     ASSERT_NULL(tape.head->prev);
     ASSERT_NULL(tape.head->next);
-    ASSERT_EQUAL(0, tape.head->symbol);
+    ASSERT_EQUAL(SYMB_NULL, tape.head->symbol);
 
     free_tape(tape);
 
@@ -141,7 +142,7 @@ CTEST(suite_tape, rm_node_tail)
     ASSERT_TRUE(tape.head == tape.tail);
     ASSERT_NULL(tape.head->next);
     ASSERT_NULL(tape.head->prev);
-    ASSERT_EQUAL(0, tape.head->symbol);
+    ASSERT_EQUAL(SYMB_NULL, tape.head->symbol);
 
     tape = add_node_head('a', tape);
     tape = rm_node_tail(tape);
@@ -149,7 +150,7 @@ CTEST(suite_tape, rm_node_tail)
     ASSERT_TRUE(tape.head == tape.tail);
     ASSERT_NULL(tape.head->prev);
     ASSERT_NULL(tape.head->next);
-    ASSERT_EQUAL(0, tape.head->symbol);
+    ASSERT_EQUAL(SYMB_NULL, tape.head->symbol);
 
     free_tape(tape);
 
@@ -206,8 +207,8 @@ CTEST(suite_tape, is_tape_empty)
 
 CTEST(suite_tape, create_node)
 {
-    Node n1 = create_node(0);
-    ASSERT_EQUAL(0, n1->symbol);
+    Node n1 = create_node(SYMB_NULL);
+    ASSERT_EQUAL(SYMB_NULL, n1->symbol);
     ASSERT_NULL(n1->prev);
     ASSERT_NULL(n1->next);
     free(n1);
@@ -224,7 +225,7 @@ CTEST(suite_tape, is_node_empty)
     int res;
     Node n1;
 
-    n1 = create_node(0);
+    n1 = create_node(SYMB_NULL);
     res = is_node_empty(n1);
     ASSERT_EQUAL(1, res);
     free(n1);
@@ -233,4 +234,37 @@ CTEST(suite_tape, is_node_empty)
     res = is_node_empty(n1);
     ASSERT_EQUAL(0, res);
     free(n1);
+}
+
+CTEST(suite_tape, check_length_correct)
+{
+    Tape tape = create_tape();
+
+    ASSERT_EQUAL(0, tape.length);
+
+    tape = rm_node_head(tape);
+
+    ASSERT_EQUAL(0, tape.length);
+
+    tape = add_node_head('a', tape);
+
+    ASSERT_EQUAL(1, tape.length);
+
+    tape = add_node_head('b', tape);
+
+    ASSERT_EQUAL(2, tape.length);
+
+    tape = rm_node_tail(tape);
+
+    ASSERT_EQUAL(1, tape.length);
+
+    tape = rm_node_head(tape);
+
+    ASSERT_EQUAL(0, tape.length);
+
+    tape = rm_node_tail(tape);
+
+    ASSERT_EQUAL(0, tape.length);
+
+    free_tape(tape);
 }

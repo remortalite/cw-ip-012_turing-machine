@@ -12,6 +12,7 @@ typedef struct tape Tape;
 struct tape {
     Node head;
     Node tail;
+    unsigned length;
 };
 
 Node create_node(char);

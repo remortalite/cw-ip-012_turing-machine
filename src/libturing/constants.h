@@ -14,4 +14,8 @@
 // used in: src/libturing/checks.c
 #define AVAIL_SYMBOLS "*_+[]<>:!#-,.()?"
 
+// NULL-symbol
+// used for pseudo-element (when tape is empty)
+#define SYMB_NULL '_'
+
 #endif // CONSTANTS_H

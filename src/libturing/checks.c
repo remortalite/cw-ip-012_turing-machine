@@ -41,15 +41,6 @@ static int is_symb_correct(char symbol)
 void check_symbol(char symbol)
 {
     // check if symbol is correct
-    // allow to use 0 as correct symbol for pseudoelement
-    if (is_symb_correct(symbol) == 0 && symbol != 0) {
-        fprintf(stderr, "Wrong symbol: '%c'(%d)!\n", symbol, (int)symbol);
-        exit(ERR_WRONG_SYMBOL);
-    }
-}
-
-void check_symbol_inp(char symbol)
-{
     if (is_symb_correct(symbol) == 0) {
         fprintf(stderr, "Wrong symbol: '%c'(%d)!\n", symbol, (int)symbol);
         exit(ERR_WRONG_SYMBOL);
