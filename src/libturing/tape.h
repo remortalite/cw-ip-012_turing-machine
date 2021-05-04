@@ -15,8 +15,6 @@ struct tape {
     unsigned length;
 };
 
-Node create_node(char);
-
 Tape create_tape(void);
 
 void free_tape(Tape);

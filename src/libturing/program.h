@@ -33,15 +33,7 @@ struct program {
     int max_length; // allocated memory for `names` and `states`
 };
 
-State create_state(char* name);
-
-Action create_action(char symb_old, char symb_new, Motion motion, char* next);
-
-State add_action(Action, State);
-
 Program create_program(void);
-
-Program add_state(State, Program);
 
 void free_program(Program);
 
