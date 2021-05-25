@@ -220,10 +220,14 @@ Program add_command(
         char* next,
         Program prog)
 {
+	State state = get_state(name, prog);
+	if (state == NULL)
+			state = create_state(name);
+
     prog = add_state(
             add_action(
                     create_action(symb_old, symb_new, motion, next),
-                    create_state(name)),
+                    state),
             prog);
     return prog;
 }
