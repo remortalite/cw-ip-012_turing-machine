@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-    struct _params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
+    struct params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
 
     parse_args(&params, argc, argv);
 

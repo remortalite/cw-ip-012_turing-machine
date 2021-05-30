@@ -8,17 +8,17 @@
 
 #define MAX_FILENAME 32
 
-struct _params {
+struct params {
     char* input;
     char* output;
     char* startfile;
     short silent;
 };
 
-void parse_args(struct _params* params, int argc, char** argv);
+void parse_args(struct params*, int argc, char** argv);
 
 char* get_input_filename();
 
-void get_missing_params(struct _params* params);
+void get_missing_params(struct params*);
 
 #endif
