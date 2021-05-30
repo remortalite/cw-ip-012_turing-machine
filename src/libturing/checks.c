@@ -7,10 +7,12 @@
 #include <string.h>
 
 enum Errors {
-    ERR_MEMORY_ALLOCATION = 1,
+    ERR_MEMORY_ALLOCATION = 2,
     ERR_WRONG_SYMBOL,
     ERR_STATENAME_LONG,
     ERR_STATENAME_CHAR,
+    ERR_ARGPARSE,
+    ERR_FILE_OPEN,
 };
 
 void check_p_allocated(void* pname, int line)
@@ -87,4 +89,25 @@ void check_statename(const char* statename)
 {
     check_statename_len(statename);
     check_statename_char(statename);
+}
+
+void print_help_message()
+{
+    fprintf(stderr, "%s\n", HELP_MESSAGE);
+}
+
+void raise_and_exit_argparse()
+{
+    print_help_message();
+    exit(ERR_ARGPARSE);
+}
+
+void check_file_exists(char* filename)
+{
+    FILE* fin = fopen(filename, "r");
+    if (fin == NULL) {
+        fprintf(stderr, "Error! File `%s` doesn't exist!\n", filename);
+        exit(ERR_FILE_OPEN);
+    }
+    fclose(fin);
 }

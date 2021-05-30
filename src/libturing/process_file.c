@@ -71,7 +71,8 @@ char* get_word(char* line, char** ret)
         free(word);
         return NULL;
     }
-    *ret = line + len;
+    if (ret)
+        *ret = line + len;
     return word;
 }
 
