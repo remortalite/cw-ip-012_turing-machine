@@ -6,40 +6,35 @@
 #include <stdio.h>
 #include <string.h>
 
-#define PATH_DEFAULT "./turing_prog1.txt"
-
 int main(int argc, char** argv)
 {
-    struct _params params = {NULL, NULL, NULL, 0};
+    struct _params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
 
     parse_args(&params, argc, argv);
 
-#ifdef DEBUG
-    printf("Parameters:\n");
-    printf("Input: %s\n", params.input);
-    printf("Output: %s\n", params.output);
-    printf("Startfile: %s\n", params.startfile);
-    printf("Silent: %d\n\n", params.silent);
-#endif
+    printf("Turing machine app\n\n");
 
-    printf("Turing machine app\n");
+    get_missing_params(&params);
 
-    if (params.input == NULL) {
-        printf("Please enter an input filename:\n");
-    }
+    printf("Input name: %s\n", params.input);
+    printf("Output name: %s\n", params.output);
+    printf("Startfile name: %s\n", params.startfile);
+    printf("Silentmode: %s\n", params.silent ? "on" : "off");
 
-    FILE* fin = fopen(params.input ? params.input : PATH_DEFAULT, "r");
-    if (fin == NULL)
+    FILE* fin = fopen(params.input, "r");
+    if (fin == NULL) {
+        printf("File %s doesn't exist!\n", params.input);
         return 1;
+    }
+    /*
+        Program prog = create_program();
 
-    Program prog = create_program();
+        prog = fill_program(fin, prog);
 
-    prog = fill_program(fin, prog);
+        print_program(prog);
 
-    print_program(prog);
-
-    fclose(fin);
-    free_program(prog);
-
+        fclose(fin);
+        free_program(prog);
+    */
     return 0;
 }
