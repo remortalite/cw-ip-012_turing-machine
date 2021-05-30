@@ -11,6 +11,12 @@ void parse_args(struct params* params, int argc, char** argv)
 {
     int i;
     for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--help") == 0) {
+            print_help_message();
+            exit(EXIT_SUCCESS);
+        }
+    }
+    for (i = 1; i < argc; i++) {
         if (argv[i][0] == '-') {
             switch (argv[i][1]) {
             case 'f':
