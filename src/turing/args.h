@@ -21,4 +21,6 @@ char* get_input_filename();
 
 void get_missing_params(struct params*);
 
+void print_params(struct params);
+
 #endif

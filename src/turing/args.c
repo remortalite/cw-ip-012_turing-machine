@@ -43,11 +43,7 @@ void parse_args(struct params* params, int argc, char** argv)
         }
     }
 #ifdef DEBUG
-    printf("Parameters:\n");
-    printf("Input: %s\n", params->input);
-    printf("Output: %s\n", params->output);
-    printf("Startfile: %s\n", params->startfile);
-    printf("Silent: %d\n\n", params->silent);
+    print_params(*params);
 #endif
 }
 
@@ -63,33 +59,48 @@ char* get_input_filename()
 void get_missing_params(struct params* params)
 {
     if (params->input == NULL) {
-        printf("Please enter an input filename: [default: %s]\n",
-               INPUT_DEFAULT);
+        printf("Input filename: [default: %s]\n", INPUT_DEFAULT);
         params->input = get_input_filename();
         if (params->input == NULL) {
+#ifdef DEBUG
             printf("Using default path: %s\n\n", (char*)INPUT_DEFAULT);
+#endif
             params->input = INPUT_DEFAULT;
         }
     }
 
     if (params->output == NULL) {
-        printf("Please enter an output filename: [default: %s]\n",
+        printf("Output filename: [default: %s]\n",
                OUTPUT_DEFAULT ? OUTPUT_DEFAULT : "None");
         params->output = get_input_filename();
         if (params->output == NULL && OUTPUT_DEFAULT) {
+#ifdef DEBUG
             printf("Using default path: %s\n\n", (char*)OUTPUT_DEFAULT);
+#endif
             params->output = OUTPUT_DEFAULT;
         }
     }
 
     if (params->startfile == NULL) {
-        printf("Enter startline filename: [default: %s] (you can enter it "
+        printf("Startline filename: [default: %s] (you can enter it "
                "manually later)\n",
                STARTFILE_DEFAULT ? STARTFILE_DEFAULT : "None");
         params->startfile = get_input_filename();
         if (params->startfile == NULL && STARTFILE_DEFAULT) {
+#ifdef DEBUG
             printf("Using default path: %s\n\n", (char*)STARTFILE_DEFAULT);
+#endif
             params->startfile = STARTFILE_DEFAULT;
         }
     }
+}
+
+void print_params(struct params params)
+{
+    printf("---\n");
+    printf("Input name:\t%s\n", params.input);
+    printf("Output name:\t%s\n", params.output);
+    printf("Startfile name:\t%s\n", params.startfile);
+    printf("Silentmode:\t%s\n", params.silent ? "on" : "off");
+    printf("---\n\n");
 }

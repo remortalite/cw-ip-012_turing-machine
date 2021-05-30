@@ -16,4 +16,6 @@ void print_help_message();
 
 void raise_and_exit_argparse(); // ERR_ARGPARSE
 
+void check_file_exists(char*); // ERR_FILE_OPEN
+
 #endif // CHECKS_H

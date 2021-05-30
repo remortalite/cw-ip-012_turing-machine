@@ -1,3 +1,4 @@
+#include <libturing/checks.h>
 #include <libturing/process_file.h>
 #include <libturing/program.h>
 #include <libturing/tape.h>
@@ -9,32 +10,23 @@
 int main(int argc, char** argv)
 {
     struct params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
-
     parse_args(&params, argc, argv);
 
     printf("Turing machine app\n\n");
 
     get_missing_params(&params);
+    print_params(params);
 
-    printf("Input name: %s\n", params.input);
-    printf("Output name: %s\n", params.output);
-    printf("Startfile name: %s\n", params.startfile);
-    printf("Silentmode: %s\n", params.silent ? "on" : "off");
-
+    check_file_exists(params.input);
     FILE* fin = fopen(params.input, "r");
-    if (fin == NULL) {
-        printf("File %s doesn't exist!\n", params.input);
-        return 1;
-    }
-    /*
-        Program prog = create_program();
 
-        prog = fill_program(fin, prog);
+    Program prog = create_program();
 
-        print_program(prog);
+    prog = fill_program(fin, prog);
 
-        fclose(fin);
-        free_program(prog);
-    */
+    print_program(prog);
+
+    fclose(fin);
+    free_program(prog);
     return 0;
 }

@@ -12,6 +12,7 @@ enum Errors {
     ERR_STATENAME_LONG,
     ERR_STATENAME_CHAR,
     ERR_ARGPARSE,
+    ERR_FILE_OPEN,
 };
 
 void check_p_allocated(void* pname, int line)
@@ -99,4 +100,14 @@ void raise_and_exit_argparse()
 {
     print_help_message();
     exit(ERR_ARGPARSE);
+}
+
+void check_file_exists(char* filename)
+{
+    FILE* fin = fopen(filename, "r");
+    if (fin == NULL) {
+        fprintf(stderr, "Error! File `%s` doesn't exist!\n", filename);
+        exit(ERR_FILE_OPEN);
+    }
+    fclose(fin);
 }
