@@ -18,8 +18,8 @@
 // used for pseudo-element (when tape is empty)
 #define SYMB_NULL '_'
 
-#define HELP_MESSAGE                                                     \
-    "Usage: turing [-f <input name>] [-o <output name>] [-s <startline " \
-    "name>] [--silent]"
+#define HELP_MESSAGE                                          \
+    "Usage: turing [-f <INPUT_FILE>] [-o <OUTPUT_FILE>] [-s " \
+    "<STARTLINE_FILE>] [--silent]"
 
 #endif // CONSTANTS_H
