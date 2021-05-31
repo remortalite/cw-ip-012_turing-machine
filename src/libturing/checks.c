@@ -13,6 +13,8 @@ enum Errors {
     ERR_STATENAME_CHAR,
     ERR_ARGPARSE,
     ERR_FILE_OPEN,
+    ERR_STARTLINE_LEN,
+    ERR_STARTLINE_EMPTY,
 };
 
 void check_p_allocated(void* pname, int line)
@@ -110,4 +112,29 @@ void check_file_exists(char* filename)
         exit(ERR_FILE_OPEN);
     }
     fclose(fin);
+}
+
+static void check_startline_len(char* line)
+{
+    if (strlen(line) > MAX_STARTLINE) {
+        fprintf(stderr,
+                "Startline can't be longer than %d symbols! (You can change "
+                "MAX_STARTLINE definition at ./src/libturing/constants.h)\n",
+                MAX_STARTLINE);
+        exit(ERR_STARTLINE_LEN);
+    }
+}
+
+static void check_startline_empty(char* line)
+{
+    if (line == NULL || (line != NULL && line[0] == '\0')) {
+        fprintf(stderr, "Error! Startline can't be an empty line!\n");
+        exit(ERR_STARTLINE_EMPTY);
+    };
+}
+
+void check_startline(char* line)
+{
+    check_startline_empty(line);
+    check_startline_len(line);
 }

@@ -26,4 +26,6 @@
     "\t-s <filename> \tFilename with start line for tape\n"           \
     "\t--silent\tEnable silent mode"
 
+#define MAX_STARTLINE 512
+
 #endif // CONSTANTS_H

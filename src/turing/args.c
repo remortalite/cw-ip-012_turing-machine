@@ -110,3 +110,27 @@ void print_params(struct params params)
     printf("Silentmode:\t%s\n", params.silent ? "on" : "off");
     printf("---\n\n");
 }
+
+char* get_startline(struct params params)
+{
+    char* line;
+    if (params.startfile) {
+        check_file_exists(params.startfile);
+        FILE* fin = fopen(params.startfile, "r");
+        line = get_line(fin);
+        fclose(fin);
+    } else {
+        printf("Enter startline:\n");
+        do {
+            line = get_line(stdin);
+            line = strip(line);
+            if (line[0] == '\0')
+                fprintf(stderr,
+                        "You can't use empty string, please use `_` as "
+                        "placeholder!\n");
+        } while (line[0] == '\0');
+    }
+    line = strip(line);
+    check_startline(line);
+    return line;
+}

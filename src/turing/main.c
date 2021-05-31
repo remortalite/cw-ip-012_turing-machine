@@ -17,6 +17,13 @@ int main(int argc, char** argv)
     get_missing_params(&params);
     print_params(params);
 
+    char* startline = get_startline(params);
+    if (startline == NULL) {
+        fprintf(stderr, "YOU CANNOT NULL tHERE\n");
+    }
+
+    printf("*****\nStartline: `%s`\n****\n", startline);
+
     check_file_exists(params.input);
     FILE* fin = fopen(params.input, "r");
 
