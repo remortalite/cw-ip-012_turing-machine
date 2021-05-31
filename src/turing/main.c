@@ -20,11 +20,12 @@ int main(int argc, char** argv)
     get_missing_params(&params);
     print_params(params);
 
+    check_file_exists(params.input);
+
     char* startline = get_startline(params);
 
     printf("Startline: `%s`\n", startline);
 
-    check_file_exists(params.input);
     FILE* fin = fopen(params.input, "r");
 
     prog = fill_program(fin, prog);

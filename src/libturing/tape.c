@@ -120,10 +120,13 @@ int is_node_empty(Node node)
 
 Tape fill_tape(char* line, Tape tape)
 {
+    int i, c;
     int length = (int)strlen(line);
-    for (int i = 0; i < length; i++) {
-        line[i] = (line[i] == ' ') ? '_' : line[i];
-        tape = add_node_tail(line[i], tape);
+    for (i = 0; i < length; i++) {
+        c = line[i];
+        c = (c == ' ') ? '_' : c;
+        check_symbol(c);
+        tape = add_node_tail(c, tape);
     }
     return tape;
 }
