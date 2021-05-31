@@ -23,4 +23,6 @@ void get_missing_params(struct params*);
 
 void print_params(struct params);
 
+char* get_startline(struct params);
+
 #endif

@@ -9,6 +9,9 @@
 
 int main(int argc, char** argv)
 {
+    Program prog = create_program();
+    Tape tape = create_tape();
+
     struct params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
     parse_args(&params, argc, argv);
 
@@ -17,14 +20,24 @@ int main(int argc, char** argv)
     get_missing_params(&params);
     print_params(params);
 
+    char* startline = get_startline(params);
+
+    printf("Startline: `%s`\n", startline);
+
     check_file_exists(params.input);
     FILE* fin = fopen(params.input, "r");
 
-    Program prog = create_program();
-
     prog = fill_program(fin, prog);
+    tape = fill_tape(startline, tape);
 
-    print_program(prog);
+    Node node;
+    for (node = tape.head; node != tape.tail->next; node = node->next) {
+        printf("%c ", node->symbol);
+    }
+    putchar('\n');
+
+    if (params.silent == 0)
+        print_program(prog);
 
     fclose(fin);
     free_program(prog);

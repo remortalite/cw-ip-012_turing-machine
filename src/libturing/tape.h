@@ -31,4 +31,6 @@ Tape rm_node_tail(Tape);
 
 int is_node_empty(Node);
 
+Tape fill_tape(char* line, Tape);
+
 #endif // TAPE_H

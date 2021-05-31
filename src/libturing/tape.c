@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Node create_node(char symbol)
 {
@@ -115,4 +116,14 @@ int is_node_empty(Node node)
     if (node->symbol == SYMB_NULL)
         return 1;
     return 0;
+}
+
+Tape fill_tape(char* line, Tape tape)
+{
+    int length = (int)strlen(line);
+    for (int i = 0; i < length; i++) {
+        line[i] = (line[i] == ' ') ? '_' : line[i];
+        tape = add_node_tail(line[i], tape);
+    }
+    return tape;
 }

@@ -18,4 +18,6 @@ void raise_and_exit_argparse(); // ERR_ARGPARSE
 
 void check_file_exists(char*); // ERR_FILE_OPEN
 
+void check_startline(char*); // ERR_STARTLINE_LEN or ERR_STARTLINE_EMPTY
+
 #endif // CHECKS_H
