@@ -62,26 +62,45 @@ void run_action(Tape* tape, Action action, Node* cursor)
     make_motion(tape, cursor, action->motion);
 }
 
-void start_program(Program prog, Tape* tape, Node* cursor)
+void start_program(Program prog, Tape* tape, Node* cursor, Params rc)
 {
     Action action;
     int is_halt = 0;
     char* statename = NULL;
+
+    FILE* fout;
+
+    if (rc.output) {
+        fout = fopen(rc.output, "w");
+    }
 
     action = get_action(start_state, (*cursor)->symbol, prog);
 
     while (is_halt == 0) {
         run_action(tape, action, cursor);
 
-        printf("Statename: %s\n", statename ? statename : start_state);
+        if (rc.silent == 0) {
+            printf("Statename: %s\n", statename ? statename : start_state);
 
-        printf("Action: %c %c %d %s\n",
-               action->symb_old,
-               action->symb_new,
-               action->motion,
-               action->next_state);
-
-        print_tape(*tape, *cursor);
+            printf("Action: %c %c %d %s\n",
+                   action->symb_old,
+                   action->symb_new,
+                   action->motion,
+                   action->next_state);
+            print_tape(*tape, *cursor);
+        }
+        if (rc.output) {
+            fprintf(fout,
+                    "Statename: %s\n",
+                    statename ? statename : start_state);
+            fprintf(fout,
+                    "Action: %c %c %d %s\n",
+                    action->symb_old,
+                    action->symb_new,
+                    action->motion,
+                    action->next_state);
+            fprint_tape(fout, *tape, *cursor);
+        }
 
         if (strncmp("halt", action->next_state, sizeof("halt")) == 0)
             is_halt = 1;
@@ -89,4 +108,6 @@ void start_program(Program prog, Tape* tape, Node* cursor)
         statename = action->next_state;
         action = get_action(action->next_state, (*cursor)->symbol, prog);
     }
+    if (rc.output)
+        fclose(fout);
 }

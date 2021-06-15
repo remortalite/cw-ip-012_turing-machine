@@ -15,7 +15,7 @@ int main(int argc, char** argv)
     Tape tape = create_tape();
     Node cursor = NULL;
 
-    struct params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
+    Params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
     parse_args(&params, argc, argv);
 
     printf("Turing machine app\n\n");
@@ -36,14 +36,14 @@ int main(int argc, char** argv)
 
     cursor = tape.head;
 
-    print_tape(tape, cursor);
-
     // if (params.silent == 0)
     // print_program(prog);
 
-    // print_tape(tape, cursor);
-    start_program(prog, &tape, &cursor);
-    // print_tape(tape, cursor);
+    start_program(prog, &tape, &cursor, params);
+
+    printf("\n++++++++++++++\n");
+    printf("Final tape:\n");
+    print_tape(tape, cursor);
 
     fclose(fin);
     free_program(prog);
