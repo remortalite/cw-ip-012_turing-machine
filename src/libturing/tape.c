@@ -12,7 +12,7 @@ Node create_node(char symbol)
     check_allocated(new_node);
     check_symbol(symbol);
     new_node->symbol = symbol;
-    new_node->prev = NULL;
+    new_node->next = NULL;
     new_node->prev = NULL;
     return new_node;
 }
