@@ -1,4 +1,5 @@
 #include <libturing/checks.h>
+#include <libturing/cursor.h>
 #include <libturing/print_tape.h>
 #include <libturing/process_file.h>
 #include <libturing/program.h>
@@ -12,6 +13,7 @@ int main(int argc, char** argv)
 {
     Program prog = create_program();
     Tape tape = create_tape();
+    Node cursor = NULL;
 
     struct params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
     parse_args(&params, argc, argv);
@@ -32,17 +34,16 @@ int main(int argc, char** argv)
     prog = fill_program(fin, prog);
     tape = fill_tape(startline, tape);
 
-    /*
-Node node;
-for (node = tape.head; node != tape.tail->next; node = node->next) {
-    printf("%c ", node->symbol);
-}
-putchar('\n');
-    */
-    print_tape(tape, tape.tail->prev);
+    cursor = tape.head;
 
-    if (params.silent == 0)
-        print_program(prog);
+    print_tape(tape, cursor);
+
+    // if (params.silent == 0)
+    // print_program(prog);
+
+    print_tape(tape, cursor);
+    start_program(prog, &tape, &cursor);
+    print_tape(tape, cursor);
 
     fclose(fin);
     free_program(prog);
