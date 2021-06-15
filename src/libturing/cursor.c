@@ -66,11 +66,14 @@ void start_program(Program prog, Tape* tape, Node* cursor)
 {
     Action action;
     int is_halt = 0;
+    char* statename = NULL;
 
-    action = get_action("0", (*cursor)->symbol, prog);
+    action = get_action(start_state, (*cursor)->symbol, prog);
 
     while (is_halt == 0) {
         run_action(tape, action, cursor);
+
+        printf("Statename: %s\n", statename ? statename : start_state);
 
         printf("Action: %c %c %d %s\n",
                action->symb_old,
@@ -83,6 +86,7 @@ void start_program(Program prog, Tape* tape, Node* cursor)
         if (strncmp("halt", action->next_state, sizeof("halt")) == 0)
             is_halt = 1;
 
+        statename = action->next_state;
         action = get_action(action->next_state, (*cursor)->symbol, prog);
     }
 }

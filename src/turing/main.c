@@ -41,9 +41,9 @@ int main(int argc, char** argv)
     // if (params.silent == 0)
     // print_program(prog);
 
-    print_tape(tape, cursor);
+    // print_tape(tape, cursor);
     start_program(prog, &tape, &cursor);
-    print_tape(tape, cursor);
+    // print_tape(tape, cursor);
 
     fclose(fin);
     free_program(prog);
