@@ -32,17 +32,7 @@ int main(int argc, char** argv)
     prog = fill_program(fin, prog);
     tape = fill_tape(startline, tape);
 
-    /*
-Node node;
-for (node = tape.head; node != tape.tail->next; node = node->next) {
-    printf("%c ", node->symbol);
-}
-putchar('\n');
-    */
     print_tape(tape, tape.tail->prev);
-
-    if (params.silent == 0)
-        print_program(prog);
 
     fclose(fin);
     free_program(prog);
