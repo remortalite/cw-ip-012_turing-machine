@@ -15,7 +15,7 @@ int main(int argc, char** argv)
     Tape tape = create_tape();
     Node cursor = NULL;
 
-    Params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
+    Params params = {NULL, NULL, NULL, NULL, SILENTMODE_DEFAULT};
     parse_args(&params, argc, argv);
 
     printf("Turing machine app\n\n");

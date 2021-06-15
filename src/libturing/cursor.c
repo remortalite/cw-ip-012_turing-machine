@@ -74,7 +74,8 @@ void start_program(Program prog, Tape* tape, Node* cursor, Params rc)
         fout = fopen(rc.output, "w");
     }
 
-    action = get_action(start_state, (*cursor)->symbol, prog);
+    check_statename_exists(prog, rc.startstate);
+    action = get_action(rc.startstate, (*cursor)->symbol, prog);
 
     while (is_halt == 0) {
         run_action(tape, action, cursor);

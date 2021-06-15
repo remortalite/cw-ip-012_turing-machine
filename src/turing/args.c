@@ -37,6 +37,12 @@ void parse_args(Params* params, int argc, char** argv)
                 }
                 params->startfile = argv[++i];
                 break;
+            case 't':
+                if (params->startstate != NULL) {
+                    raise_and_exit_argparse();
+                }
+                params->startstate = argv[++i];
+                break;
             case '-':
                 if (strcmp("--silent", argv[i]) == 0) {
                     params->silent = 1;
@@ -87,6 +93,24 @@ void get_missing_params(Params* params)
         }
     }
 
+    if (params->startstate == NULL) {
+        printf("Startstate name: [default: `%s`] (you can enter it "
+               "manually later)\n",
+               STARTSTATE_DEFAULT ? STARTSTATE_DEFAULT : "None");
+        params->startstate = get_line(stdin);
+        params->startstate = strip(params->startstate);
+        if (params->startstate[0] == '\0')
+            params->startstate = NULL;
+        if (params->startstate == NULL && STARTSTATE_DEFAULT) {
+#ifdef DEBUG
+            printf("Using default name: `%s`\n\n", (char*)STARTSTATE_DEFAULT);
+#endif
+            params->startstate = STARTSTATE_DEFAULT;
+        } else {
+            check_statename(params->startstate);
+        }
+    }
+
     if (params->startfile == NULL) {
         printf("Startline filename: [default: %s] (you can enter it "
                "manually later)\n",
@@ -107,6 +131,7 @@ void print_params(Params params)
     printf("Input name:\t%s\n", params.input);
     printf("Output name:\t%s\n", params.output);
     printf("Startfile name:\t%s\n", params.startfile);
+    printf("Startstate:\t%s\n", params.startstate);
     printf("Silentmode:\t%s\n", params.silent ? "on" : "off");
     printf("---\n\n");
 }

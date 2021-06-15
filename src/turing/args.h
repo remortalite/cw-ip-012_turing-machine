@@ -5,6 +5,7 @@
 #define OUTPUT_DEFAULT NULL
 #define STARTFILE_DEFAULT NULL
 #define SILENTMODE_DEFAULT 0
+#define STARTSTATE_DEFAULT "0"
 
 #define MAX_FILENAME 32
 
@@ -12,6 +13,7 @@ typedef struct _params {
     char* input;
     char* output;
     char* startfile;
+    char* startstate;
     short silent;
 } Params;
 
