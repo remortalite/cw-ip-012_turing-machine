@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void parse_args(struct params* params, int argc, char** argv)
+void parse_args(Params* params, int argc, char** argv)
 {
     int i;
     for (i = 1; i < argc; i++) {
@@ -62,7 +62,7 @@ char* get_input_filename()
     return (str_dest == NULL || str_dest[0] == '\0') ? NULL : str_dest;
 }
 
-void get_missing_params(struct params* params)
+void get_missing_params(Params* params)
 {
     if (params->input == NULL) {
         printf("Input filename: [default: %s]\n", INPUT_DEFAULT);
@@ -101,7 +101,7 @@ void get_missing_params(struct params* params)
     }
 }
 
-void print_params(struct params params)
+void print_params(Params params)
 {
     printf("---\n");
     printf("Input name:\t%s\n", params.input);
@@ -111,7 +111,7 @@ void print_params(struct params params)
     printf("---\n\n");
 }
 
-char* get_startline(struct params params)
+char* get_startline(Params params)
 {
     char* line;
     if (params.startfile) {
