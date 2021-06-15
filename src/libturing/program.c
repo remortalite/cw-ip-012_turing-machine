@@ -206,7 +206,8 @@ Action get_action(char* name, char symb_old, Program prog)
         return NULL;
     int i;
     for (i = 0; i < state->len_actions; i++) {
-        if (state->actions[i]->symb_old == symb_old)
+        if (state->actions[i]->symb_old == symb_old
+            || state->actions[i]->symb_old == '*')
             return state->actions[i];
     }
     return NULL;

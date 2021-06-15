@@ -216,6 +216,17 @@ CTEST(suite_program, get_action)
     result = get_action("q2", 'b', prog);
     ASSERT_NULL(result);
 
+    prog = add_state(
+            add_action(
+                    create_action('*', '1', MOTION_LEFT, "q1"),
+                    create_state("q2")),
+            prog);
+
+    result = get_action("q2", '4', prog);
+    ASSERT_NOT_NULL(result);
+    ASSERT_EQUAL('*', result->symb_old);
+    ASSERT_EQUAL('1', result->symb_new);
+
     free_program(prog);
 }
 
