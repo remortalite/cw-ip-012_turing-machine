@@ -31,6 +31,9 @@ Tape rm_node_tail(Tape);
 
 int is_node_empty(Node);
 
+// fill_tape:
+// fill Tape object with symbols from string (line)
+// replace ` ` with `_`
 Tape fill_tape(char* line, Tape);
 
 #endif // TAPE_H
