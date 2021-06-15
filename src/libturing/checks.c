@@ -11,6 +11,7 @@ enum Errors {
     ERR_WRONG_SYMBOL,
     ERR_STATENAME_LONG,
     ERR_STATENAME_CHAR,
+    ERR_STATENAME_EXIST,
     ERR_ARGPARSE,
     ERR_FILE_OPEN,
     ERR_STARTLINE_LEN,
@@ -137,4 +138,23 @@ void check_startline(char* line)
 {
     check_startline_empty(line);
     check_startline_len(line);
+}
+
+static int is_statename_exists(Program prog, char* name)
+{
+    int i;
+    for (i = 0; i < prog.length; i++)
+        if (strcmp(name, prog.names[i]) == 0)
+            return 1;
+    return 0;
+}
+
+void check_statename_exists(Program prog, char* name)
+{
+    if (is_statename_exists(prog, name) == 0) {
+        fprintf(stderr,
+                "Error! Statename `%s` doesn't exists in that program!\n",
+                name);
+        exit(ERR_STATENAME_EXIST);
+    }
 }

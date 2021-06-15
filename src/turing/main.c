@@ -1,4 +1,5 @@
 #include <libturing/checks.h>
+#include <libturing/cursor.h>
 #include <libturing/print_tape.h>
 #include <libturing/process_file.h>
 #include <libturing/program.h>
@@ -12,8 +13,9 @@ int main(int argc, char** argv)
 {
     Program prog = create_program();
     Tape tape = create_tape();
+    Node cursor = NULL;
 
-    struct params params = {NULL, NULL, NULL, SILENTMODE_DEFAULT};
+    Params params = {NULL, NULL, NULL, NULL, SILENTMODE_DEFAULT};
     parse_args(&params, argc, argv);
 
     printf("Turing machine app\n\n");
@@ -32,7 +34,13 @@ int main(int argc, char** argv)
     prog = fill_program(fin, prog);
     tape = fill_tape(startline, tape);
 
-    print_tape(tape, tape.tail->prev);
+    cursor = tape.head;
+
+    start_program(prog, &tape, &cursor, params);
+
+    printf("\n++++++++++++++\n");
+    printf("Final tape:\n");
+    print_tape(tape, cursor);
 
     fclose(fin);
     free_program(prog);

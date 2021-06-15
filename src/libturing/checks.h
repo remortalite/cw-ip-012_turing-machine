@@ -1,6 +1,8 @@
 #ifndef CHECKS_H
 #define CHECKS_H
 
+#include <libturing/program.h>
+
 #define check_allocated(p) check_p_allocated((void*)p, __LINE__)
 
 void check_p_allocated(void*, int line); // ERR_MEMORY_ALLOCATION
@@ -19,5 +21,7 @@ void raise_and_exit_argparse(); // ERR_ARGPARSE
 void check_file_exists(char*); // ERR_FILE_OPEN
 
 void check_startline(char*); // ERR_STARTLINE_LEN or ERR_STARTLINE_EMPTY
+
+void check_statename_exists(Program, char*); // ERR_STATENAME_EXIST
 
 #endif // CHECKS_H

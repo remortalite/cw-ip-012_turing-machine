@@ -5,24 +5,26 @@
 #define OUTPUT_DEFAULT NULL
 #define STARTFILE_DEFAULT NULL
 #define SILENTMODE_DEFAULT 0
+#define STARTSTATE_DEFAULT "0"
 
 #define MAX_FILENAME 32
 
-struct params {
+typedef struct _params {
     char* input;
     char* output;
     char* startfile;
+    char* startstate;
     short silent;
-};
+} Params;
 
-void parse_args(struct params*, int argc, char** argv);
+void parse_args(Params*, int argc, char** argv);
 
 char* get_input_filename();
 
-void get_missing_params(struct params*);
+void get_missing_params(Params*);
 
-void print_params(struct params);
+void print_params(Params);
 
-char* get_startline(struct params);
+char* get_startline(Params);
 
 #endif

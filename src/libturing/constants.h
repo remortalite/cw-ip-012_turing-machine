@@ -20,10 +20,11 @@
 
 #define HELP_MESSAGE                                                  \
     "Usage: turing [-f INPUT_FILE] [-o OUTPUT_FILE] [-s "             \
-    "STARTLINE_FILE] [--silent]\n\n"                                  \
+    "STARTLINE_FILE] [-t INITIAL_STATENAME] [--silent]\n\n"           \
     "\t-f <filename> \tInput filename with code for turing machine\n" \
     "\t-o <filename> \tOutput filename\n"                             \
     "\t-s <filename> \tFilename with start line for tape\n"           \
+    "\t-t <statename> \tInitial statename\n"                          \
     "\t--silent\tEnable silent mode"
 
 #define MAX_STARTLINE 512

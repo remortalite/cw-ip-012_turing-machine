@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void parse_args(struct params* params, int argc, char** argv)
+void parse_args(Params* params, int argc, char** argv)
 {
     int i;
     for (i = 1; i < argc; i++) {
@@ -37,6 +37,12 @@ void parse_args(struct params* params, int argc, char** argv)
                 }
                 params->startfile = argv[++i];
                 break;
+            case 't':
+                if (params->startstate != NULL) {
+                    raise_and_exit_argparse();
+                }
+                params->startstate = argv[++i];
+                break;
             case '-':
                 if (strcmp("--silent", argv[i]) == 0) {
                     params->silent = 1;
@@ -62,7 +68,7 @@ char* get_input_filename()
     return (str_dest == NULL || str_dest[0] == '\0') ? NULL : str_dest;
 }
 
-void get_missing_params(struct params* params)
+void get_missing_params(Params* params)
 {
     if (params->input == NULL) {
         printf("Input filename: [default: %s]\n", INPUT_DEFAULT);
@@ -87,6 +93,24 @@ void get_missing_params(struct params* params)
         }
     }
 
+    if (params->startstate == NULL) {
+        printf("Startstate name: [default: `%s`] (you can enter it "
+               "manually later)\n",
+               STARTSTATE_DEFAULT ? STARTSTATE_DEFAULT : "None");
+        params->startstate = get_line(stdin);
+        params->startstate = strip(params->startstate);
+        if (params->startstate[0] == '\0')
+            params->startstate = NULL;
+        if (params->startstate == NULL && STARTSTATE_DEFAULT) {
+#ifdef DEBUG
+            printf("Using default name: `%s`\n\n", (char*)STARTSTATE_DEFAULT);
+#endif
+            params->startstate = STARTSTATE_DEFAULT;
+        } else {
+            check_statename(params->startstate);
+        }
+    }
+
     if (params->startfile == NULL) {
         printf("Startline filename: [default: %s] (you can enter it "
                "manually later)\n",
@@ -101,17 +125,18 @@ void get_missing_params(struct params* params)
     }
 }
 
-void print_params(struct params params)
+void print_params(Params params)
 {
     printf("---\n");
     printf("Input name:\t%s\n", params.input);
     printf("Output name:\t%s\n", params.output);
     printf("Startfile name:\t%s\n", params.startfile);
+    printf("Startstate:\t%s\n", params.startstate);
     printf("Silentmode:\t%s\n", params.silent ? "on" : "off");
     printf("---\n\n");
 }
 
-char* get_startline(struct params params)
+char* get_startline(Params params)
 {
     char* line;
     if (params.startfile) {
